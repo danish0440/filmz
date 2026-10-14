@@ -1673,7 +1673,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft"
+name = "filmz"
 version = "0.7.2"
 dependencies = [
  "arboard",
@@ -1681,14 +1681,14 @@ dependencies = [
  "cpal",
  "eframe",
  "egui",
- "filmcraft-engine",
- "filmcraft-export",
- "filmcraft-gpu",
- "filmcraft-platform",
- "filmcraft-project",
- "filmcraft-render",
- "filmcraft-time",
- "filmcraft-ui-egui",
+ "filmz-engine",
+ "filmz-export",
+ "filmz-gpu",
+ "filmz-platform",
+ "filmz-project",
+ "filmz-render",
+ "filmz-time",
+ "filmz-ui-egui",
  "glob",
  "log",
  "muda",
@@ -1706,47 +1706,47 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-aac"
+name = "filmz-aac"
 version = "0.7.2"
 dependencies = [
- "filmcraft-bitstream",
- "filmcraft-testkit",
+ "filmz-bitstream",
+ "filmz-testkit",
  "rayon",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-ac3"
+name = "filmz-ac3"
 version = "0.7.2"
 dependencies = [
- "filmcraft-testkit",
+ "filmz-testkit",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-apv"
+name = "filmz-apv"
 version = "0.7.2"
 dependencies = [
- "filmcraft-bitstream",
- "filmcraft-testkit",
+ "filmz-bitstream",
+ "filmz-testkit",
  "rayon",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-audio-dsp"
+name = "filmz-audio-dsp"
 version = "0.7.2"
 dependencies = [
- "filmcraft-testkit",
+ "filmz-testkit",
 ]
 
 [[package]]
-name = "filmcraft-automation"
+name = "filmz-automation"
 version = "0.7.2"
 dependencies = [
  "base64 0.22.1",
- "filmcraft-engine",
- "filmcraft-time",
+ "filmz-engine",
+ "filmz-time",
  "image",
  "rmcp",
  "schemars",
@@ -1757,98 +1757,98 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-av1"
+name = "filmz-av1"
 version = "0.7.2"
 dependencies = [
- "filmcraft-bitstream",
- "filmcraft-testkit",
+ "filmz-bitstream",
+ "filmz-testkit",
  "rayon",
  "rustix 1.1.5",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-avi"
+name = "filmz-avi"
 version = "0.7.2"
 dependencies = [
- "filmcraft-testkit",
+ "filmz-testkit",
 ]
 
 [[package]]
-name = "filmcraft-bitstream"
+name = "filmz-bitstream"
 version = "0.7.2"
 dependencies = [
  "proptest",
 ]
 
 [[package]]
-name = "filmcraft-captions"
+name = "filmz-captions"
 version = "0.7.2"
 dependencies = [
- "filmcraft-color",
- "filmcraft-project",
- "filmcraft-text",
- "filmcraft-time",
+ "filmz-color",
+ "filmz-project",
+ "filmz-text",
+ "filmz-time",
  "proptest",
  "roxmltree",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-cfb"
+name = "filmz-cfb"
 version = "0.7.2"
 
 [[package]]
-name = "filmcraft-cli"
+name = "filmz-cli"
 version = "0.7.2"
 dependencies = [
- "filmcraft-automation",
- "filmcraft-codecs",
- "filmcraft-engine",
- "filmcraft-export",
- "filmcraft-gpu",
- "filmcraft-media",
- "filmcraft-mpegts",
- "filmcraft-mxf",
- "filmcraft-ogg",
- "filmcraft-platform",
- "filmcraft-project",
- "filmcraft-render",
- "filmcraft-testkit",
- "filmcraft-time",
+ "filmz-automation",
+ "filmz-codecs",
+ "filmz-engine",
+ "filmz-export",
+ "filmz-gpu",
+ "filmz-media",
+ "filmz-mpegts",
+ "filmz-mxf",
+ "filmz-ogg",
+ "filmz-platform",
+ "filmz-project",
+ "filmz-render",
+ "filmz-testkit",
+ "filmz-time",
  "serde_json",
  "tokio",
 ]
 
 [[package]]
-name = "filmcraft-codecs"
+name = "filmz-codecs"
 version = "0.7.2"
 dependencies = [
- "filmcraft-aac",
- "filmcraft-ac3",
- "filmcraft-apv",
- "filmcraft-av1",
- "filmcraft-avi",
- "filmcraft-bitstream",
- "filmcraft-color",
- "filmcraft-dnx",
- "filmcraft-frame",
- "filmcraft-h264",
- "filmcraft-hevc",
- "filmcraft-isobmff",
- "filmcraft-matroska",
- "filmcraft-media",
- "filmcraft-mpa",
- "filmcraft-mpeg2v",
- "filmcraft-mpegts",
- "filmcraft-mxf",
- "filmcraft-ogg",
- "filmcraft-opus",
- "filmcraft-prores",
- "filmcraft-testkit",
- "filmcraft-time",
- "filmcraft-vp8",
- "filmcraft-vp9",
+ "filmz-aac",
+ "filmz-ac3",
+ "filmz-apv",
+ "filmz-av1",
+ "filmz-avi",
+ "filmz-bitstream",
+ "filmz-color",
+ "filmz-dnx",
+ "filmz-frame",
+ "filmz-h264",
+ "filmz-hevc",
+ "filmz-isobmff",
+ "filmz-matroska",
+ "filmz-media",
+ "filmz-mpa",
+ "filmz-mpeg2v",
+ "filmz-mpegts",
+ "filmz-mxf",
+ "filmz-ogg",
+ "filmz-opus",
+ "filmz-prores",
+ "filmz-testkit",
+ "filmz-time",
+ "filmz-vp8",
+ "filmz-vp9",
  "image",
  "log",
  "rayon",
@@ -1859,7 +1859,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-color"
+name = "filmz-color"
 version = "0.7.2"
 dependencies = [
  "proptest",
@@ -1867,63 +1867,63 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-dng"
+name = "filmz-dng"
 version = "0.7.2"
 dependencies = [
- "filmcraft-dng",
+ "filmz-dng",
  "rayon",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-dnx"
+name = "filmz-dnx"
 version = "0.7.2"
 dependencies = [
- "filmcraft-bitstream",
- "filmcraft-testkit",
+ "filmz-bitstream",
+ "filmz-testkit",
  "rayon",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-edit"
+name = "filmz-edit"
 version = "0.7.2"
 dependencies = [
- "filmcraft-geom",
- "filmcraft-media",
- "filmcraft-project",
- "filmcraft-time",
+ "filmz-geom",
+ "filmz-media",
+ "filmz-project",
+ "filmz-time",
  "proptest",
  "serde_json",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-engine"
+name = "filmz-engine"
 version = "0.7.2"
 dependencies = [
- "filmcraft-audio-dsp",
- "filmcraft-captions",
- "filmcraft-codecs",
- "filmcraft-color",
- "filmcraft-dng",
- "filmcraft-edit",
- "filmcraft-export",
- "filmcraft-format",
- "filmcraft-frame",
- "filmcraft-geom",
- "filmcraft-interchange",
- "filmcraft-isobmff",
- "filmcraft-media",
- "filmcraft-mxf",
- "filmcraft-project",
- "filmcraft-render",
- "filmcraft-scopes",
- "filmcraft-speech",
- "filmcraft-testkit",
- "filmcraft-text",
- "filmcraft-time",
- "filmcraft-tts",
+ "filmz-audio-dsp",
+ "filmz-captions",
+ "filmz-codecs",
+ "filmz-color",
+ "filmz-dng",
+ "filmz-edit",
+ "filmz-export",
+ "filmz-format",
+ "filmz-frame",
+ "filmz-geom",
+ "filmz-interchange",
+ "filmz-isobmff",
+ "filmz-media",
+ "filmz-mxf",
+ "filmz-project",
+ "filmz-render",
+ "filmz-scopes",
+ "filmz-speech",
+ "filmz-testkit",
+ "filmz-text",
+ "filmz-time",
+ "filmz-tts",
  "image",
  "log",
  "serde",
@@ -1933,28 +1933,28 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-export"
+name = "filmz-export"
 version = "0.7.2"
 dependencies = [
- "filmcraft-aac",
- "filmcraft-apv",
- "filmcraft-audio-dsp",
- "filmcraft-codecs",
- "filmcraft-color",
- "filmcraft-dnx",
- "filmcraft-flac",
- "filmcraft-frame",
- "filmcraft-geom",
- "filmcraft-h264enc",
- "filmcraft-isobmff",
- "filmcraft-media",
- "filmcraft-mxf",
- "filmcraft-project",
- "filmcraft-prores",
- "filmcraft-render",
- "filmcraft-testkit",
- "filmcraft-text",
- "filmcraft-time",
+ "filmz-aac",
+ "filmz-apv",
+ "filmz-audio-dsp",
+ "filmz-codecs",
+ "filmz-color",
+ "filmz-dnx",
+ "filmz-flac",
+ "filmz-frame",
+ "filmz-geom",
+ "filmz-h264enc",
+ "filmz-isobmff",
+ "filmz-media",
+ "filmz-mxf",
+ "filmz-project",
+ "filmz-prores",
+ "filmz-render",
+ "filmz-testkit",
+ "filmz-text",
+ "filmz-time",
  "image",
  "rayon",
  "serde",
@@ -1964,21 +1964,21 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-flac"
+name = "filmz-flac"
 version = "0.7.2"
 dependencies = [
- "filmcraft-bitstream",
- "filmcraft-testkit",
+ "filmz-bitstream",
+ "filmz-testkit",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-format"
+name = "filmz-format"
 version = "0.7.2"
 dependencies = [
- "filmcraft-media",
- "filmcraft-project",
- "filmcraft-time",
+ "filmz-media",
+ "filmz-project",
+ "filmz-time",
  "log",
  "serde",
  "serde_json",
@@ -1986,17 +1986,17 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-frame"
+name = "filmz-frame"
 version = "0.7.2"
 dependencies = [
- "filmcraft-color",
- "filmcraft-time",
+ "filmz-color",
+ "filmz-time",
  "rayon",
  "serde",
 ]
 
 [[package]]
-name = "filmcraft-geom"
+name = "filmz-geom"
 version = "0.7.2"
 dependencies = [
  "proptest",
@@ -2004,34 +2004,34 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-golden"
+name = "filmz-golden"
 version = "0.7.2"
 dependencies = [
- "filmcraft-color",
- "filmcraft-frame",
- "filmcraft-geom",
- "filmcraft-gpu",
- "filmcraft-media",
- "filmcraft-project",
- "filmcraft-render",
- "filmcraft-testkit",
- "filmcraft-time",
+ "filmz-color",
+ "filmz-frame",
+ "filmz-geom",
+ "filmz-gpu",
+ "filmz-media",
+ "filmz-project",
+ "filmz-render",
+ "filmz-testkit",
+ "filmz-time",
  "pollster 0.4.0",
  "wgpu",
 ]
 
 [[package]]
-name = "filmcraft-gpu"
+name = "filmz-gpu"
 version = "0.7.2"
 dependencies = [
- "filmcraft-color",
- "filmcraft-export",
- "filmcraft-frame",
- "filmcraft-geom",
- "filmcraft-media",
- "filmcraft-project",
- "filmcraft-render",
- "filmcraft-time",
+ "filmz-color",
+ "filmz-export",
+ "filmz-frame",
+ "filmz-geom",
+ "filmz-media",
+ "filmz-project",
+ "filmz-render",
+ "filmz-time",
  "image",
  "log",
  "pollster 0.4.0",
@@ -2040,45 +2040,45 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-h264"
+name = "filmz-h264"
 version = "0.7.2"
 dependencies = [
- "filmcraft-bitstream",
- "filmcraft-testkit",
+ "filmz-bitstream",
+ "filmz-testkit",
  "rayon",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-h264enc"
+name = "filmz-h264enc"
 version = "0.7.2"
 dependencies = [
- "filmcraft-bitstream",
- "filmcraft-testkit",
+ "filmz-bitstream",
+ "filmz-testkit",
  "rayon",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-hevc"
+name = "filmz-hevc"
 version = "0.7.2"
 dependencies = [
- "filmcraft-bitstream",
- "filmcraft-testkit",
+ "filmz-bitstream",
+ "filmz-testkit",
  "rayon",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-interchange"
+name = "filmz-interchange"
 version = "0.7.2"
 dependencies = [
- "filmcraft-cfb",
- "filmcraft-color",
- "filmcraft-geom",
- "filmcraft-media",
- "filmcraft-project",
- "filmcraft-time",
+ "filmz-cfb",
+ "filmz-color",
+ "filmz-geom",
+ "filmz-media",
+ "filmz-project",
+ "filmz-time",
  "proptest",
  "roxmltree",
  "serde",
@@ -2087,33 +2087,33 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-isobmff"
+name = "filmz-isobmff"
 version = "0.7.2"
 dependencies = [
- "filmcraft-bitstream",
- "filmcraft-testkit",
+ "filmz-bitstream",
+ "filmz-testkit",
  "proptest",
  "serde_json",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-matroska"
+name = "filmz-matroska"
 version = "0.7.2"
 dependencies = [
- "filmcraft-testkit",
+ "filmz-testkit",
  "serde_json",
 ]
 
 [[package]]
-name = "filmcraft-media"
+name = "filmz-media"
 version = "0.7.2"
 dependencies = [
- "filmcraft-color",
- "filmcraft-dng",
- "filmcraft-frame",
- "filmcraft-testkit",
- "filmcraft-time",
+ "filmz-color",
+ "filmz-dng",
+ "filmz-frame",
+ "filmz-testkit",
+ "filmz-time",
  "image",
  "png",
  "rayon",
@@ -2122,69 +2122,69 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-mpa"
+name = "filmz-mpa"
 version = "0.7.2"
 dependencies = [
- "filmcraft-bitstream",
- "filmcraft-testkit",
+ "filmz-bitstream",
+ "filmz-testkit",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-mpeg2v"
+name = "filmz-mpeg2v"
 version = "0.7.2"
 dependencies = [
- "filmcraft-testkit",
+ "filmz-testkit",
  "rayon",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-mpegts"
+name = "filmz-mpegts"
 version = "0.7.2"
 dependencies = [
- "filmcraft-testkit",
+ "filmz-testkit",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-mxf"
+name = "filmz-mxf"
 version = "0.7.2"
 dependencies = [
- "filmcraft-testkit",
+ "filmz-testkit",
 ]
 
 [[package]]
-name = "filmcraft-ogg"
+name = "filmz-ogg"
 version = "0.7.2"
 dependencies = [
- "filmcraft-testkit",
+ "filmz-testkit",
 ]
 
 [[package]]
-name = "filmcraft-opus"
+name = "filmz-opus"
 version = "0.7.2"
 dependencies = [
- "filmcraft-testkit",
+ "filmz-testkit",
 ]
 
 [[package]]
-name = "filmcraft-platform"
+name = "filmz-platform"
 version = "0.7.2"
 dependencies = [
- "filmcraft-bitstream",
- "filmcraft-codecs",
- "filmcraft-color",
- "filmcraft-export",
- "filmcraft-frame",
- "filmcraft-h264",
- "filmcraft-hevc",
- "filmcraft-isobmff",
- "filmcraft-media",
- "filmcraft-project",
- "filmcraft-render",
- "filmcraft-testkit",
- "filmcraft-time",
+ "filmz-bitstream",
+ "filmz-codecs",
+ "filmz-color",
+ "filmz-export",
+ "filmz-frame",
+ "filmz-h264",
+ "filmz-hevc",
+ "filmz-isobmff",
+ "filmz-media",
+ "filmz-project",
+ "filmz-render",
+ "filmz-testkit",
+ "filmz-time",
  "libloading",
  "log",
  "objc2-core-foundation",
@@ -2195,13 +2195,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-project"
+name = "filmz-project"
 version = "0.7.2"
 dependencies = [
- "filmcraft-color",
- "filmcraft-geom",
- "filmcraft-media",
- "filmcraft-time",
+ "filmz-color",
+ "filmz-geom",
+ "filmz-media",
+ "filmz-time",
  "proptest",
  "serde",
  "serde_json",
@@ -2209,28 +2209,28 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-prores"
+name = "filmz-prores"
 version = "0.7.2"
 dependencies = [
- "filmcraft-bitstream",
- "filmcraft-testkit",
+ "filmz-bitstream",
+ "filmz-testkit",
  "rayon",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-render"
+name = "filmz-render"
 version = "0.7.2"
 dependencies = [
- "filmcraft-audio-dsp",
- "filmcraft-captions",
- "filmcraft-color",
- "filmcraft-frame",
- "filmcraft-geom",
- "filmcraft-media",
- "filmcraft-project",
- "filmcraft-text",
- "filmcraft-time",
+ "filmz-audio-dsp",
+ "filmz-captions",
+ "filmz-color",
+ "filmz-frame",
+ "filmz-geom",
+ "filmz-media",
+ "filmz-project",
+ "filmz-text",
+ "filmz-time",
  "image",
  "rayon",
  "rustix 1.1.5",
@@ -2239,22 +2239,22 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-scopes"
+name = "filmz-scopes"
 version = "0.7.2"
 dependencies = [
- "filmcraft-color",
+ "filmz-color",
  "serde",
  "serde_json",
 ]
 
 [[package]]
-name = "filmcraft-speech"
+name = "filmz-speech"
 version = "0.7.2"
 dependencies = [
  "candle-core",
  "candle-nn",
- "filmcraft-project",
- "filmcraft-time",
+ "filmz-project",
+ "filmz-time",
  "rayon",
  "rustls",
  "rustls-rustcrypto",
@@ -2266,17 +2266,17 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-testkit"
+name = "filmz-testkit"
 version = "0.7.2"
 dependencies = [
  "png",
 ]
 
 [[package]]
-name = "filmcraft-text"
+name = "filmz-text"
 version = "0.7.2"
 dependencies = [
- "filmcraft-color",
+ "filmz-color",
  "harfrust",
  "skrifa",
  "unicode-bidi",
@@ -2285,7 +2285,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-time"
+name = "filmz-time"
 version = "0.7.2"
 dependencies = [
  "proptest",
@@ -2293,13 +2293,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-tts"
+name = "filmz-tts"
 version = "0.7.2"
 dependencies = [
  "candle-core",
  "candle-nn",
- "filmcraft-audio-dsp",
- "filmcraft-tts-text",
+ "filmz-audio-dsp",
+ "filmz-tts-text",
  "serde",
  "serde_json",
  "thiserror 2.0.21",
@@ -2307,7 +2307,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-tts-text"
+name = "filmz-tts-text"
 version = "0.7.2"
 dependencies = [
  "serde",
@@ -2315,7 +2315,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-ui-egui"
+name = "filmz-ui-egui"
 version = "0.7.2"
 dependencies = [
  "cpu-time",
@@ -2323,24 +2323,24 @@ dependencies = [
  "eframe",
  "egui",
  "egui_kittest",
- "filmcraft-audio-dsp",
- "filmcraft-codecs",
- "filmcraft-color",
- "filmcraft-edit",
- "filmcraft-engine",
- "filmcraft-export",
- "filmcraft-frame",
- "filmcraft-geom",
- "filmcraft-gpu",
- "filmcraft-interchange",
- "filmcraft-media",
- "filmcraft-platform",
- "filmcraft-project",
- "filmcraft-render",
- "filmcraft-scopes",
- "filmcraft-text",
- "filmcraft-time",
- "filmcraft-tts",
+ "filmz-audio-dsp",
+ "filmz-codecs",
+ "filmz-color",
+ "filmz-edit",
+ "filmz-engine",
+ "filmz-export",
+ "filmz-frame",
+ "filmz-geom",
+ "filmz-gpu",
+ "filmz-interchange",
+ "filmz-media",
+ "filmz-platform",
+ "filmz-project",
+ "filmz-render",
+ "filmz-scopes",
+ "filmz-text",
+ "filmz-time",
+ "filmz-tts",
  "image",
  "log",
  "pollster 0.4.0",
@@ -2354,36 +2354,36 @@ dependencies = [
 ]
 
 [[package]]
-name = "filmcraft-vp8"
+name = "filmz-vp8"
 version = "0.7.2"
 dependencies = [
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-vp9"
+name = "filmz-vp9"
 version = "0.7.2"
 dependencies = [
- "filmcraft-bitstream",
+ "filmz-bitstream",
  "rayon",
  "thiserror 2.0.21",
 ]
 
 [[package]]
-name = "filmcraft-web"
+name = "filmz-web"
 version = "0.7.2"
 dependencies = [
  "eframe",
  "egui",
- "filmcraft-codecs",
- "filmcraft-color",
- "filmcraft-engine",
- "filmcraft-format",
- "filmcraft-frame",
- "filmcraft-isobmff",
- "filmcraft-media",
- "filmcraft-time",
- "filmcraft-ui-egui",
+ "filmz-codecs",
+ "filmz-color",
+ "filmz-engine",
+ "filmz-format",
+ "filmz-frame",
+ "filmz-isobmff",
+ "filmz-media",
+ "filmz-time",
+ "filmz-ui-egui",
  "js-sys",
  "log",
  "serde_json",
@@ -7398,7 +7398,7 @@ checksum = "e450f9b2ed1dff33c94c12589a87338689467b9c4f5d8a5710bd09a847d2c8a7"
 name = "xtask"
 version = "0.7.2"
 dependencies = [
- "filmcraft-testkit",
+ "filmz-testkit",
  "serde_json",
 ]
 

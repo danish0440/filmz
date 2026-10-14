@@ -3,7 +3,7 @@
 mod common;
 
 use common::*;
-use filmcraft_isobmff::*;
+use filmz_isobmff::*;
 use serde_json::Value;
 use std::io::Cursor;
 use std::path::{Path, PathBuf};
@@ -79,7 +79,7 @@ fn remux(input: &Path, out_name: &str, brand: Brand, finish: Finish, timecode: O
             assert_eq!(f.read_sample(data.as_slice(), i, j).unwrap(), g.read_sample(out.as_slice(), k, j).unwrap());
         }
     }
-    assert_eq!(g.metadata.title(), Some("FilmCraft test"));
+    assert_eq!(g.metadata.title(), Some("FilmZ test"));
     Some((f, path))
 }
 

@@ -1,0 +1,38 @@
+[package]
+name = "filmz-cli"
+description = "FilmZ headless CLI and MCP server"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "filmz-cli"
+path = "src/main.rs"
+
+[features]
+default = []
+# Speech-to-text (Text panel ▸ Transcribe) with Whisper on the CPU, and model downloads.
+whisper = ["filmz-engine/whisper", "filmz-engine/speech-download"]
+
+[dependencies]
+filmz-engine = { workspace = true }
+filmz-export = { workspace = true }
+filmz-project = { workspace = true }
+filmz-render = { workspace = true }
+filmz-time = { workspace = true }
+filmz-gpu = { workspace = true }
+filmz-media = { workspace = true }
+filmz-codecs = { workspace = true }
+filmz-platform = { workspace = true }
+filmz-mxf = { workspace = true }
+filmz-mpegts = { workspace = true }
+filmz-ogg = { workspace = true }
+filmz-automation = { workspace = true }
+serde_json = { workspace = true }
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+
+[dev-dependencies]
+filmz-testkit = { workspace = true }

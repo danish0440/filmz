@@ -1,11 +1,11 @@
 {
   "mcpServers": {
-    "filmcraft": {
-      "command": "target/release/filmcraft-cli",
+    "filmz": {
+      "command": "target/release/filmz-cli",
       "args": ["mcp", "--bridge", "127.0.0.1:9876"]
     },
-    "filmcraft-headless": {
-      "command": "target/release/filmcraft-cli",
+    "filmz-headless": {
+      "command": "target/release/filmz-cli",
       "args": ["mcp", "--demo"]
     }
   }

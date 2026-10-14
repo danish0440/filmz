@@ -8,59 +8,59 @@ version = "0.7.2"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 rust-version = "1.95"
-repository = "https://github.com/storytold/filmcraft"
+repository = "https://github.com/danish0440/filmz"
 
 [workspace.dependencies]
 # internal
-filmcraft-time = { path = "crates/time" }
-filmcraft-geom = { path = "crates/geom" }
-filmcraft-color = { path = "crates/color" }
-filmcraft-bitstream = { path = "crates/bitstream" }
-filmcraft-isobmff = { path = "crates/isobmff" }
-filmcraft-avi = { path = "crates/avi" }
-filmcraft-matroska = { path = "crates/matroska" }
-filmcraft-mxf = { path = "crates/mxf" }
-filmcraft-cfb = { path = "crates/cfb" }
-filmcraft-mpegts = { path = "crates/mpegts" }
-filmcraft-mpeg2v = { path = "crates/mpeg2v" }
-filmcraft-ac3 = { path = "crates/ac3" }
-filmcraft-mpa = { path = "crates/mpa" }
-filmcraft-ogg = { path = "crates/ogg" }
-filmcraft-h264 = { path = "crates/h264" }
-filmcraft-hevc = { path = "crates/hevc" }
-filmcraft-vp8 = { path = "crates/vp8" }
-filmcraft-vp9 = { path = "crates/vp9" }
-filmcraft-prores = { path = "crates/prores" }
-filmcraft-dnx = { path = "crates/dnx" }
-filmcraft-apv = { path = "crates/apv" }
-filmcraft-dng = { path = "crates/dng" }
-filmcraft-av1 = { path = "crates/av1" }
-filmcraft-aac = { path = "crates/aac" }
-filmcraft-flac = { path = "crates/flac" }
-filmcraft-opus = { path = "crates/opus" }
-filmcraft-h264enc = { path = "crates/h264enc" }
-filmcraft-audio-dsp = { path = "crates/audio-dsp" }
-filmcraft-frame = { path = "crates/frame" }
-filmcraft-media = { path = "crates/media" }
-filmcraft-codecs = { path = "crates/codecs" }
-filmcraft-project = { path = "crates/project" }
-filmcraft-edit = { path = "crates/edit" }
-filmcraft-interchange = { path = "crates/interchange" }
-filmcraft-text = { path = "crates/text" }
-filmcraft-captions = { path = "crates/captions" }
-filmcraft-speech = { path = "crates/speech" }
-filmcraft-tts = { path = "crates/tts" }
-filmcraft-tts-text = { path = "crates/tts-text" }
-filmcraft-render = { path = "crates/render" }
-filmcraft-gpu = { path = "crates/gpu" }
-filmcraft-scopes = { path = "crates/scopes" }
-filmcraft-export = { path = "crates/export" }
-filmcraft-format = { path = "crates/format" }
-filmcraft-engine = { path = "crates/engine" }
-filmcraft-ui-egui = { path = "crates/ui-egui" }
-filmcraft-automation = { path = "crates/automation" }
-filmcraft-platform = { path = "crates/platform" }
-filmcraft-testkit = { path = "crates/testkit" }
+filmz-time = { path = "crates/time" }
+filmz-geom = { path = "crates/geom" }
+filmz-color = { path = "crates/color" }
+filmz-bitstream = { path = "crates/bitstream" }
+filmz-isobmff = { path = "crates/isobmff" }
+filmz-avi = { path = "crates/avi" }
+filmz-matroska = { path = "crates/matroska" }
+filmz-mxf = { path = "crates/mxf" }
+filmz-cfb = { path = "crates/cfb" }
+filmz-mpegts = { path = "crates/mpegts" }
+filmz-mpeg2v = { path = "crates/mpeg2v" }
+filmz-ac3 = { path = "crates/ac3" }
+filmz-mpa = { path = "crates/mpa" }
+filmz-ogg = { path = "crates/ogg" }
+filmz-h264 = { path = "crates/h264" }
+filmz-hevc = { path = "crates/hevc" }
+filmz-vp8 = { path = "crates/vp8" }
+filmz-vp9 = { path = "crates/vp9" }
+filmz-prores = { path = "crates/prores" }
+filmz-dnx = { path = "crates/dnx" }
+filmz-apv = { path = "crates/apv" }
+filmz-dng = { path = "crates/dng" }
+filmz-av1 = { path = "crates/av1" }
+filmz-aac = { path = "crates/aac" }
+filmz-flac = { path = "crates/flac" }
+filmz-opus = { path = "crates/opus" }
+filmz-h264enc = { path = "crates/h264enc" }
+filmz-audio-dsp = { path = "crates/audio-dsp" }
+filmz-frame = { path = "crates/frame" }
+filmz-media = { path = "crates/media" }
+filmz-codecs = { path = "crates/codecs" }
+filmz-project = { path = "crates/project" }
+filmz-edit = { path = "crates/edit" }
+filmz-interchange = { path = "crates/interchange" }
+filmz-text = { path = "crates/text" }
+filmz-captions = { path = "crates/captions" }
+filmz-speech = { path = "crates/speech" }
+filmz-tts = { path = "crates/tts" }
+filmz-tts-text = { path = "crates/tts-text" }
+filmz-render = { path = "crates/render" }
+filmz-gpu = { path = "crates/gpu" }
+filmz-scopes = { path = "crates/scopes" }
+filmz-export = { path = "crates/export" }
+filmz-format = { path = "crates/format" }
+filmz-engine = { path = "crates/engine" }
+filmz-ui-egui = { path = "crates/ui-egui" }
+filmz-automation = { path = "crates/automation" }
+filmz-platform = { path = "crates/platform" }
+filmz-testkit = { path = "crates/testkit" }
 
 # foundation
 thiserror = "2"
@@ -96,50 +96,50 @@ opt-level = 2
 opt-level = 1
 
 # Codec hot loops: debug-build tests (RFC/oracle vectors) are minutes slower below opt-level 3.
-[profile.dev.package.filmcraft-h264]
+[profile.dev.package.filmz-h264]
 opt-level = 3
 
-[profile.dev.package.filmcraft-h264enc]
+[profile.dev.package.filmz-h264enc]
 opt-level = 3
 
-[profile.dev.package.filmcraft-hevc]
+[profile.dev.package.filmz-hevc]
 opt-level = 3
 
-[profile.dev.package.filmcraft-prores]
+[profile.dev.package.filmz-prores]
 opt-level = 3
 
-[profile.dev.package.filmcraft-dnx]
+[profile.dev.package.filmz-dnx]
 opt-level = 3
 
-[profile.dev.package.filmcraft-apv]
+[profile.dev.package.filmz-apv]
 opt-level = 3
 
-[profile.dev.package.filmcraft-dng]
+[profile.dev.package.filmz-dng]
 opt-level = 3
 
-[profile.dev.package.filmcraft-av1]
+[profile.dev.package.filmz-av1]
 opt-level = 3
 
-[profile.dev.package.filmcraft-aac]
+[profile.dev.package.filmz-aac]
 opt-level = 3
 
-[profile.dev.package.filmcraft-flac]
+[profile.dev.package.filmz-flac]
 opt-level = 3
 
 # Audio effects: realtime-factor tests and long convolution / spectral runs.
-[profile.dev.package.filmcraft-audio-dsp]
+[profile.dev.package.filmz-audio-dsp]
 opt-level = 3
 
-[profile.dev.package.filmcraft-mxf]
+[profile.dev.package.filmz-mxf]
 opt-level = 3
 
-[profile.dev.package.filmcraft-opus]
+[profile.dev.package.filmz-opus]
 opt-level = 3
 
-[profile.dev.package.filmcraft-vp8]
+[profile.dev.package.filmz-vp8]
 opt-level = 3
 
-[profile.dev.package.filmcraft-vp9]
+[profile.dev.package.filmz-vp9]
 opt-level = 3
 
 [profile.release]

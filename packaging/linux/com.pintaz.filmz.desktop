@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=FilmZ
+GenericName=Video Editor
+Comment=Edit video, color and sound
+Exec=filmz %F
+TryExec=filmz
+Icon=com.pintaz.filmz
+Terminal=false
+StartupNotify=true
+StartupWMClass=com.pintaz.filmz
+Categories=AudioVideo;Video;AudioVideoEditing;
+MimeType=application/x-filmz;video/mp4;video/x-m4v;video/quicktime;video/x-matroska;video/webm;video/vnd.avi;video/x-msvideo;application/mxf;video/mp2t;video/mpeg;video/3gpp;
+Keywords=video;editor;film;timeline;color;grading;nle;

@@ -4,10 +4,10 @@
 use egui::{Align2, Color32, Rect, Sense, pos2, vec2};
 use serde_json::json;
 
-use crate::FilmcraftApp;
+use crate::FilmzApp;
 use crate::theme::Tokens;
 
-pub fn show(app: &mut FilmcraftApp, ui: &mut egui::Ui, rect: Rect) {
+pub fn show(app: &mut FilmzApp, ui: &mut egui::Ui, rect: Rect) {
     let t = app.tokens;
     ui.painter().rect_filled(rect, t.radius, t.panel_bg);
     ui.painter().text(rect.min + vec2(24.0, 30.0), Align2::LEFT_CENTER, tl!("Import"), Tokens::semibold(22.0), t.text);
@@ -53,7 +53,7 @@ pub fn show(app: &mut FilmcraftApp, ui: &mut egui::Ui, rect: Rect) {
     let mut x = rect.min.x + 24.0;
     for (i, (id, label, url)) in crate::links::ALL.iter().take(4).enumerate() {
         let primary = i == 0;
-        let label = if primary { tl!("Join us on Discord") } else { crate::i18n::t(label) };
+        let label = if primary { tl!("Join us on GitHub") } else { crate::i18n::t(label) };
         let g = ui.painter().layout_no_wrap(label.to_string(), Tokens::ui(13.0), t.text);
         let r = Rect::from_min_size(pos2(x, rect.min.y + y + 18.0), vec2(g.size().x + 44.0, 34.0));
         let resp = ui.interact(r, egui::Id::new(("imp-link", *id)), Sense::click()).on_hover_text(*url);
@@ -80,7 +80,7 @@ const RECENT_ROW_H: f32 = 28.0;
 
 /// Home's Recent list at `y`: the recent projects (newest first, file name with its folder beside
 /// it), a click opens one. Returns where the next section starts.
-fn recent(app: &mut FilmcraftApp, ui: &mut egui::Ui, rect: Rect, y: f32) -> f32 {
+fn recent(app: &mut FilmzApp, ui: &mut egui::Ui, rect: Rect, y: f32) -> f32 {
     let paths: Vec<String> = app.session.prefs.general.recent_projects.iter().take(RECENT_ROWS).cloned().collect();
     if paths.is_empty() {
         return y;
