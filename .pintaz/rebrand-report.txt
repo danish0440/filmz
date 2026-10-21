@@ -2,28 +2,28 @@ rebrand filmcraft -> FilmZ
 about credit inserted in: ['crates/ui-egui/src/panels/dialogs.rs (fallback, after line 462)']
 launcher patches: []
 lines still naming ArtCraft/getartcraft/discord (non-doc): 25
+assets/app-icon/filmz.icns.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
 assets/app-icon/filmz-1024.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
 assets/app-icon/filmz.ico.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
-assets/app-icon/filmz-small.svg.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
-assets/app-icon/filmz.icns.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
-assets/app-icon/filmz-macos-512.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
 assets/app-icon/filmz.svg.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
 assets/app-icon/filmz.svg.attribution:8: notes:        SVG traced at 2048 px with craftrules assets/logo-options/_tools/vectorize_tile.py from the owner's ArtCraft drawing (craftrules assets/app-icons/
-assets/app-icon/hicolor/32x32/apps/com.pintaz.filmz.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
-assets/app-icon/hicolor/scalable/apps/com.pintaz.filmz.svg.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
-assets/app-icon/hicolor/24x24/apps/com.pintaz.filmz.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
-assets/app-icon/hicolor/128x128/apps/com.pintaz.filmz.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
-assets/app-icon/hicolor/48x48/apps/com.pintaz.filmz.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
-assets/app-icon/hicolor/512x512/apps/com.pintaz.filmz.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
+assets/app-icon/filmz-small.svg.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
+assets/app-icon/filmz-macos-512.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
 assets/app-icon/hicolor/256x256/apps/com.pintaz.filmz.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
-assets/app-icon/hicolor/16x16/apps/com.pintaz.filmz.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
+assets/app-icon/hicolor/48x48/apps/com.pintaz.filmz.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
+assets/app-icon/hicolor/scalable/apps/com.pintaz.filmz.svg.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
+assets/app-icon/hicolor/32x32/apps/com.pintaz.filmz.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
+assets/app-icon/hicolor/512x512/apps/com.pintaz.filmz.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
 assets/app-icon/hicolor/64x64/apps/com.pintaz.filmz.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
+assets/app-icon/hicolor/24x24/apps/com.pintaz.filmz.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
+assets/app-icon/hicolor/16x16/apps/com.pintaz.filmz.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
+assets/app-icon/hicolor/128x128/apps/com.pintaz.filmz.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
 apps/filmz-web/web/favicon.png.attribution:4: source:       original work (drawn by the owner in ArtCraft, then vectorised)
 crates/ui-egui/Cargo.toml:38: # ArtCraft wordmark (PNG) for the About dialog and Home screen.
 crates/ui-egui/src/brand.rs:1: //! The ArtCraft wordmark (first-party trademark, used with permission; see `docs/brand/` and
-crates/ui-egui/src/icons.rs:86: /// Community chat (the ArtCraft Discord): a speech bubble with three dots. Our own drawing,
 crates/ui-egui/src/links.rs:3: //! FilmZ is part of the ArtCraft family: the community lives on the ArtCraft Discord, every
-crates/ui-egui/src/panels/import_mode.rs:49: // ArtCraft wordmark (first-party trademark, docs/brand/), then the section title.
+crates/ui-egui/src/icons.rs:86: /// Community chat (the ArtCraft Discord): a speech bubble with three dots. Our own drawing,
 crates/ui-egui/src/panels/dialogs.rs:457: // ArtCraft wordmark (first-party trademark, docs/brand/).
 crates/ui-egui/src/panels/dialogs.rs:463: // PINTAZ-ABOUT: required credit (Apache-2.0 change notice; ArtCraft brand licence)
 crates/ui-egui/src/panels/dialogs.rs:465: ui.label("Based on FilmCraft by Storytold (ArtCraft), Apache-2.0. Changes by PINTAZ TECHNOLOGIES.");
+crates/ui-egui/src/panels/import_mode.rs:49: // ArtCraft wordmark (first-party trademark, docs/brand/), then the section title.
