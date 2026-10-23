@@ -1679,7 +1679,7 @@ dependencies = [
 
 [[package]]
 name = "filmz"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "arboard",
  "chrono",
@@ -1704,6 +1704,7 @@ dependencies = [
  "pollster 0.4.0",
  "rfd",
  "serde_json",
+ "subtle",
  "sys-locale",
  "winit",
  "winresource",
@@ -1712,7 +1713,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-aac"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-bitstream",
  "filmz-testkit",
@@ -1722,7 +1723,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-ac3"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-testkit",
  "thiserror 2.0.21",
@@ -1730,7 +1731,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-apv"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-bitstream",
  "filmz-testkit",
@@ -1740,14 +1741,14 @@ dependencies = [
 
 [[package]]
 name = "filmz-audio-dsp"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-testkit",
 ]
 
 [[package]]
 name = "filmz-automation"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "base64 0.22.1",
  "filmz-engine",
@@ -1763,7 +1764,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-av1"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-bitstream",
  "filmz-testkit",
@@ -1774,21 +1775,21 @@ dependencies = [
 
 [[package]]
 name = "filmz-avi"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-testkit",
 ]
 
 [[package]]
 name = "filmz-bitstream"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "proptest",
 ]
 
 [[package]]
 name = "filmz-captions"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-color",
  "filmz-project",
@@ -1801,11 +1802,11 @@ dependencies = [
 
 [[package]]
 name = "filmz-cfb"
-version = "0.10.0"
+version = "0.12.0"
 
 [[package]]
 name = "filmz-cli"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-automation",
  "filmz-codecs",
@@ -1827,7 +1828,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-codecs"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-aac",
  "filmz-ac3",
@@ -1865,7 +1866,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-color"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "proptest",
  "serde",
@@ -1873,7 +1874,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-dng"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-dng",
  "rayon",
@@ -1882,7 +1883,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-dnx"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-bitstream",
  "filmz-testkit",
@@ -1892,7 +1893,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-edit"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-geom",
  "filmz-media",
@@ -1905,7 +1906,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-engine"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "craft-docpath",
  "filmz-audio-dsp",
@@ -1940,7 +1941,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-export"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-aac",
  "filmz-apv",
@@ -1971,7 +1972,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-flac"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-bitstream",
  "filmz-testkit",
@@ -1980,7 +1981,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-format"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-media",
  "filmz-project",
@@ -1988,12 +1989,13 @@ dependencies = [
  "log",
  "serde",
  "serde_json",
+ "tempfile",
  "thiserror 2.0.21",
 ]
 
 [[package]]
 name = "filmz-frame"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-color",
  "filmz-time",
@@ -2003,7 +2005,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-geom"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "proptest",
  "serde",
@@ -2011,7 +2013,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-golden"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-color",
  "filmz-frame",
@@ -2028,7 +2030,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-gpu"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-color",
  "filmz-export",
@@ -2047,7 +2049,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-h264"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-bitstream",
  "filmz-testkit",
@@ -2057,7 +2059,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-h264enc"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-bitstream",
  "filmz-testkit",
@@ -2067,7 +2069,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-hevc"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-bitstream",
  "filmz-testkit",
@@ -2077,7 +2079,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-interchange"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-cfb",
  "filmz-color",
@@ -2094,7 +2096,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-isobmff"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-bitstream",
  "filmz-testkit",
@@ -2105,7 +2107,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-matroska"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-testkit",
  "serde_json",
@@ -2113,7 +2115,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-media"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-color",
  "filmz-dng",
@@ -2129,7 +2131,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-mpa"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-bitstream",
  "filmz-testkit",
@@ -2138,7 +2140,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-mpeg2v"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-testkit",
  "rayon",
@@ -2147,7 +2149,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-mpegts"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-testkit",
  "thiserror 2.0.21",
@@ -2155,28 +2157,28 @@ dependencies = [
 
 [[package]]
 name = "filmz-mxf"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-testkit",
 ]
 
 [[package]]
 name = "filmz-ogg"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-testkit",
 ]
 
 [[package]]
 name = "filmz-opus"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-testkit",
 ]
 
 [[package]]
 name = "filmz-platform"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-bitstream",
  "filmz-codecs",
@@ -2202,7 +2204,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-project"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-color",
  "filmz-geom",
@@ -2216,7 +2218,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-prores"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-bitstream",
  "filmz-testkit",
@@ -2226,7 +2228,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-render"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-audio-dsp",
  "filmz-captions",
@@ -2246,7 +2248,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-scopes"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-color",
  "serde",
@@ -2255,7 +2257,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-speech"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "candle-core",
  "candle-nn",
@@ -2273,14 +2275,14 @@ dependencies = [
 
 [[package]]
 name = "filmz-testkit"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "png",
 ]
 
 [[package]]
 name = "filmz-text"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-color",
  "harfrust",
@@ -2292,7 +2294,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-time"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "proptest",
  "serde",
@@ -2300,7 +2302,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-tts"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "candle-core",
  "candle-nn",
@@ -2314,7 +2316,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-tts-text"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "serde",
  "thiserror 2.0.21",
@@ -2322,7 +2324,7 @@ dependencies = [
 
 [[package]]
 name = "filmz-ui-egui"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "cpu-time",
  "craft-ui",
@@ -2361,23 +2363,25 @@ dependencies = [
 
 [[package]]
 name = "filmz-vp8"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
+ "filmz-testkit",
  "thiserror 2.0.21",
 ]
 
 [[package]]
 name = "filmz-vp9"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-bitstream",
+ "filmz-testkit",
  "rayon",
  "thiserror 2.0.21",
 ]
 
 [[package]]
 name = "filmz-web"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "eframe",
  "egui",
@@ -7402,7 +7406,7 @@ checksum = "e450f9b2ed1dff33c94c12589a87338689467b9c4f5d8a5710bd09a847d2c8a7"
 
 [[package]]
 name = "xtask"
-version = "0.10.0"
+version = "0.12.0"
 dependencies = [
  "filmz-testkit",
  "serde_json",

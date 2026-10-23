@@ -39,6 +39,7 @@ cargo xtask web --serve 8765                          # the web app on http://12
 | Variable | Effect |
 |---|---|
 | `FILMZ_CONTROL_PORT` | Same as `--control <port>` |
+| `FILMZ_CONTROL_TOKEN` | Required for `--control`: 64 random hex characters, inherited by authorized clients; [setup](control-protocol.md) |
 | `FILMZ_CPU_COMPOSITE=1` | Disables the GPU compositor |
 | `FILMZ_DEV_DESKTOP_ENTRY=1` | Linux, opt-in: a run from a source tree installs a user-level desktop entry (and the icons from `assets/app-icon`) so the taskbar shows the FilmZ icon. Nothing is written without it; packaged runs never write one |
 | `FILMZ_DATA_DIR` | Same as `--data-dir <dir>`: auto-save, crash recovery, settings and logs |
