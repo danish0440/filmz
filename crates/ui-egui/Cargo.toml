@@ -53,6 +53,7 @@ filmz-codecs = { workspace = true }
 filmz-platform = { workspace = true }
 filmz-interchange = { workspace = true }
 egui_kittest = { workspace = true, features = ["eframe", "wgpu"] }
+tempfile = "3"
 
 # build.rs bakes contributors/contributors.json into the binary (About ▸ Contributors).
 [build-dependencies]
