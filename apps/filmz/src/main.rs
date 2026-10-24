@@ -8,6 +8,7 @@
 //! (the demo project), Open Most Recent, or an empty project.
 //!
 //! `--control <port>` (or `FILMZ_CONTROL_PORT`) starts a localhost JSON-lines control server;
+//! `FILMZ_CONTROL_TOKEN` is required (see `docs/control-protocol.md`).
 //! see `filmz_ui_egui::control` for the methods. A port that is not a number is an error from
 //! either source.
 //!
