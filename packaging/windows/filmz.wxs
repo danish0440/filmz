@@ -7,6 +7,9 @@
   Per-machine install into Program Files and a Start Menu shortcut. No file associations.
 -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <?ifndef HasCraftFontLicences ?>
+  <?define HasCraftFontLicences=0 ?>
+  <?endif ?>
   <Package
       Name="FilmZ"
       Manufacturer="Learning Machines LLC"
@@ -34,13 +37,22 @@
     <StandardDirectory Id="ProgramMenuFolder" />
 
     <Feature Id="Main" Title="FilmZ" Level="1">
+      <?if $(var.HasCraftFontLicences) = 1 ?>
+      <ComponentGroupRef Id="CraftFontLicences" />
+      <?endif ?>
       <ComponentGroupRef Id="FilmzFiles" />
     </Feature>
   </Package>
 
   <Fragment>
+    <?if $(var.HasCraftFontLicences) = 1 ?>
+    <ComponentGroup Id="CraftFontLicences" Directory="INSTALLFOLDER">
+      <Files Include="$(var.DocsDir)\**" />
+    </ComponentGroup>
+    <?endif ?>
     <ComponentGroup Id="FilmzFiles" Directory="INSTALLFOLDER">
       <Component Id="FilmzApp" Guid="7DA464C2-B3BC-561E-BEBA-B6C4BD5178A7">
+        <File Id="FilmzNotice" Source="$(var.BinDir)\NOTICE" KeyPath="no" />
         <File Id="FilmzExe" Source="$(var.BinDir)\filmz.exe" KeyPath="yes">
           <Shortcut Id="StartMenuShortcut" Directory="ProgramMenuFolder" Name="FilmZ"
               Description="FilmZ video editor" WorkingDirectory="INSTALLFOLDER" Advertise="yes"
