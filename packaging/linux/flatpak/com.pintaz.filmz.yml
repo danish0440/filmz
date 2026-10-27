@@ -56,6 +56,7 @@ modules:
     build-commands:
       - cargo --offline build --release --locked -p filmz -p filmz-cli
       - install -Dm755 target/release/filmz /app/bin/filmz
+      - install -Dm644 NOTICE /app/share/doc/filmz/NOTICE
       # The headless CLI and its stdio MCP server, as in the release bundle (#346).
       - install -Dm755 target/release/filmz-cli /app/bin/filmz-cli
       - install -Dm644 packaging/linux/com.pintaz.filmz.desktop /app/share/applications/com.pintaz.filmz.desktop

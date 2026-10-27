@@ -86,15 +86,31 @@ foreach ($check in @(@('filmz.exe', 2), @('filmz-cli.exe', 3))) {
 $Stage = Join-Path $TargetDir "windows-package\$Arch"
 Remove-Item -Recurse -Force $Stage -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force -Path $Stage | Out-Null
+# Dependency font notices are required even without optional craft-fonts.
+Copy-Item -LiteralPath (Join-Path $Root 'NOTICE') -Destination $Stage
 Copy-Item (Join-Path $Bin 'filmz.exe'), (Join-Path $Bin 'filmz-cli.exe') $Stage
 
 & (Join-Path $PSScriptRoot 'sign.ps1') (Join-Path $Stage 'filmz.exe') (Join-Path $Stage 'filmz-cli.exe')
+
+# ---- font notices for the MSI ------------------------------------------------------------------
+# The portable ZIP already carries these notices; stage the complete files before MSI creation too.
+$Docs = Join-Path $Stage 'font-licences'
+New-Item -ItemType Directory -Force -Path $Docs | Out-Null
+$HasCraftFontLicences = 0
+if ($env:CRAFT_FONTS_DIR) {
+  foreach ($ofl in Get-ChildItem -Path (Join-Path $env:CRAFT_FONTS_DIR 'fonts\*\OFL.txt') -File -ErrorAction SilentlyContinue) {
+    Copy-Item -LiteralPath $ofl.FullName -Destination (Join-Path $Docs "OFL-$($ofl.Directory.Name).txt")
+    $HasCraftFontLicences = 1
+  }
+}
+# ---- end font notices for the MSI --------------------------------------------------------------
 
 # ---- MSI ---------------------------------------------------------------------------------------
 $Msi = Join-Path $Dist "filmz-$Version-windows-$Arch.msi"
 Invoke-Native 'wix build' {
   wix build (Join-Path $PSScriptRoot 'filmz.wxs') -arch $Arch `
     -d "Version=$MsiVersion" -d "BinDir=$Stage" -d "IconPath=$(Join-Path $Root 'assets\app-icon\filmz.ico')" `
+    -d "DocsDir=$Docs" -d "HasCraftFontLicences=$HasCraftFontLicences" `
     -o $Msi
 }
 # wix writes its debug symbols (.wixpdb) next to the MSI; keep them out of the release assets.
