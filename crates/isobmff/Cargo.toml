@@ -10,8 +10,7 @@ rust-version.workspace = true
 workspace = true
 
 [dependencies]
-filmz-bitstream = { workspace = true }
-thiserror = { workspace = true }
+craft-media = { workspace = true, features = ["isobmff"] }
 
 [dev-dependencies]
 filmz-testkit = { workspace = true }
