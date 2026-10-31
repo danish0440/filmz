@@ -14,6 +14,7 @@ filmz-time = { workspace = true }
 filmz-frame = { workspace = true }
 filmz-color = { workspace = true }
 filmz-media = { workspace = true }
+filmz-codecs = { workspace = true }
 filmz-project = { workspace = true }
 filmz-render = { workspace = true }
 filmz-audio-dsp = { workspace = true }
@@ -36,4 +37,3 @@ image = { version = "0.25", default-features = false, features = ["png", "jpeg",
 
 [dev-dependencies]
 filmz-testkit = { workspace = true }
-filmz-codecs = { workspace = true }
