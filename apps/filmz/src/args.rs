@@ -9,7 +9,8 @@ Usage: filmz [options] [project.fcproj | media files...]
 
 Options:
   --control <port>   start the localhost JSON-lines control server
-                     (also: FILMZ_CONTROL_PORT)
+                     (also: FILMZ_CONTROL_PORT; requires FILMZ_CONTROL_TOKEN,
+                     64 random hex characters; see docs/control-protocol.md)
   --control-input-only  accept widget input only from the control server
                      (requires --control or FILMZ_CONTROL_PORT)
   --demo             open the demo project
