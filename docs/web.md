@@ -31,7 +31,9 @@ unaffected; `cargo xtask wasm` (part of `cargo xtask ci`) checks it, with `filmz
 URL flags: `?empty` (no demo project), `?norecover` (don't reopen the auto-saved project),
 `?fresh` (also don't restore media kept in OPFS), `?cpu` (CPU compositor), `?webgl` (WebGL2 only;
 the page reloads with it when WebGPU is present but fails to start), `?nowebcodecs` (decode with
-FilmZ's own decoders only).
+FilmZ's own decoders only), `?host=parent` (host mode: a same-origin page embedding the app
+hands it files and takes its saves back instead of downloads; `data-host="page"` on the canvas
+is the no-iframe form — [hosting](../packaging/web/README.md)).
 
 If the app panics after start-up (or runs out of memory), `index.html` shows a "FilmZ stopped
 working" overlay with the panic message and a Reload button instead of a frozen canvas, and sets

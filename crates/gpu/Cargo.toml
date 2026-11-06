@@ -18,11 +18,11 @@ filmz-render = { workspace = true }
 filmz-time = { workspace = true }
 wgpu = { version = "30", default-features = false, features = ["wgsl"] }
 log = { workspace = true }
-pollster = "0.4"
+pollster = "1"
 rayon = { workspace = true }
 
 [dev-dependencies]
-pollster = "0.4"
+pollster = "1"
 filmz-export = { workspace = true }
 image = { version = "0.25", default-features = false, features = ["png"] }
 wgpu = { version = "30", features = ["wgsl", "metal", "vulkan", "dx12", "gles"] }
