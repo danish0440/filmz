@@ -93,7 +93,7 @@ fn project(layers: &[Arc<VideoFrame>]) -> (Project, filmz_project::ItemId, Sourc
         let item = p.add_item(
             &format!("layer{track}"),
             Label::Iris,
-            ItemKind::Media(MediaClip {
+            ItemKind::Media(Box::new(MediaClip {
                 media: MediaRef::Generator(g.generator.clone()),
                 info: info.clone(),
                 interpret: Default::default(),
@@ -103,7 +103,7 @@ fn project(layers: &[Arc<VideoFrame>]) -> (Project, filmz_project::ItemId, Sourc
                 offline: false,
                 proxy: None,
                 identity: None,
-            }),
+            })),
             None,
         );
         let mut clip = p.make_track_item(item, TrackKind::Video, Tick::ZERO, TimeRange::new(Tick::ZERO, FPS.tick_of(2000)), FPS).expect("clip");
