@@ -25,7 +25,7 @@ fn project() -> (Project, ItemId) {
     let a = p.add_item(
         "a.wav",
         filmz_project::Label::Iris,
-        filmz_project::ItemKind::Media(filmz_project::MediaClip {
+        filmz_project::ItemKind::Media(Box::new(filmz_project::MediaClip {
             media: filmz_project::MediaRef::File { path: "/m/a.wav".into() },
             info,
             interpret: Default::default(),
@@ -35,7 +35,7 @@ fn project() -> (Project, ItemId) {
             offline: false,
             proxy: None,
             identity: None,
-        }),
+        })),
         None,
     );
     let r = FrameRate::FPS_25;
