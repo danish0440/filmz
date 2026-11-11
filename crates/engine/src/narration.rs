@@ -98,7 +98,7 @@ fn cache_key(n: &Narration) -> String {
 
 fn tts_err(cmd: &str, e: tts::TtsError) -> EngineError {
     match e {
-        tts::TtsError::NotInstalled => bad(cmd, "the natural voices are not downloaded yet: Text to Speech ▸ Download natural voices (tts.downloadVoices)"),
+        tts::TtsError::NotInstalled => bad(cmd, "the natural voices are not downloaded yet: Text to Speech > Download natural voices (tts.downloadVoices)"),
         e => bad(cmd, e.to_string()),
     }
 }
@@ -127,6 +127,12 @@ fn cache_put(c: &SynthCache, key: String, a: Arc<tts::Audio>) {
     c.drain(..extra);
 }
 
+/// Whether this build can download and run the natural voices (Kokoro-82M). Official packages
+/// enable the `neural-voices` feature of the desktop app; a plain `cargo build` does not (#2318).
+pub fn natural_voices_available() -> bool {
+    cfg!(feature = "neural-voices")
+}
+
 fn package_json() -> Value {
     let dir = crate::transcript::models_dir();
     json!({
@@ -137,7 +143,7 @@ fn package_json() -> Value {
         "missingBytes": dir.as_deref().map_or(tts::catalog::size(), tts::catalog::missing_bytes),
         "license": tts::catalog::LICENSE,
         "source": tts::catalog::SOURCE,
-        "available": cfg!(feature = "neural-voices"),
+        "available": natural_voices_available(),
     })
 }
 
@@ -496,7 +502,7 @@ fn spec(
     run: fn(&mut Session, &Value) -> Result<Value>,
     journal: bool,
 ) -> CommandSpec {
-    CommandSpec { id, label, menu: &[], shortcut: None, params, enabled, run, journal }
+    CommandSpec { id, label, menu: &[], shortcut: None, params, enabled, run, journal, named: crate::commands::NamedKeys::NONE }
 }
 
 pub fn commands() -> Vec<CommandSpec> {
