@@ -14,8 +14,5 @@ filmz-time = { workspace = true }
 filmz-color = { workspace = true }
 filmz-project = { workspace = true }
 filmz-text = { workspace = true }
-thiserror = { workspace = true }
-roxmltree = { workspace = true }
+craft-captions = { workspace = true }
 
-[dev-dependencies]
-proptest = { workspace = true }

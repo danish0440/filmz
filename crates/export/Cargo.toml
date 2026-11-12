@@ -10,10 +10,14 @@ rust-version.workspace = true
 workspace = true
 
 [dependencies]
+craft-audio = { workspace = true }
+craft-video = { workspace = true }
 filmz-time = { workspace = true }
 filmz-frame = { workspace = true }
 filmz-color = { workspace = true }
 filmz-media = { workspace = true }
+craft-media = { workspace = true, features = ["mxf"] }
+filmz-codecs = { workspace = true }
 filmz-project = { workspace = true }
 filmz-render = { workspace = true }
 filmz-audio-dsp = { workspace = true }
@@ -22,10 +26,6 @@ filmz-text = { workspace = true }
 filmz-isobmff = { workspace = true }
 filmz-prores = { workspace = true }
 filmz-dnx = { workspace = true }
-filmz-apv = { workspace = true }
-filmz-mxf = { workspace = true }
-filmz-aac = { workspace = true }
-filmz-flac = { workspace = true }
 filmz-h264enc = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
@@ -36,4 +36,3 @@ image = { version = "0.25", default-features = false, features = ["png", "jpeg",
 
 [dev-dependencies]
 filmz-testkit = { workspace = true }
-filmz-codecs = { workspace = true }
