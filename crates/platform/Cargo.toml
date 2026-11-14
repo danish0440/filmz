@@ -13,21 +13,22 @@ rust-version.workspace = true
 unsafe_code = "deny"
 
 [lints.clippy]
+cognitive_complexity = "deny"
+too_many_arguments = "deny"
+wildcard_imports = "deny"
 dbg_macro = "warn"
 todo = "warn"
-too_many_arguments = "allow"
 needless_range_loop = "allow"
 type_complexity = "allow"
 undocumented_unsafe_blocks = "deny"
 
 [dependencies]
 filmz-bitstream = { workspace = true }
+craft-video = { workspace = true }
 filmz-codecs = { workspace = true }
 filmz-color = { workspace = true }
 filmz-export = { workspace = true }
 filmz-frame = { workspace = true }
-filmz-h264 = { workspace = true }
-filmz-hevc = { workspace = true }
 filmz-isobmff = { workspace = true }
 filmz-time = { workspace = true }
 log = { workspace = true }
@@ -60,6 +61,7 @@ libloading = "0.8"
 
 [dev-dependencies]
 filmz-testkit = { workspace = true }
+tempfile = "3"
 filmz-media = { workspace = true }
 filmz-frame = { workspace = true }
 filmz-project = { workspace = true }

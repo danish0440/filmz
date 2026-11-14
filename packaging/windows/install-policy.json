@@ -1,0 +1,27 @@
+{
+  "id": "filmz",
+  "name": "FilmZ",
+  "upgradeCode": "31E6FB14-9DBC-41DD-B24B-26B71FB31B62",
+  "sources": [
+    "filmz.wxs"
+  ],
+  "icon": "assets/app-icon/filmz.ico",
+  "localization": [],
+  "extensions": [
+    "UI"
+  ],
+  "payloads": [
+    "NOTICE",
+    "filmz-cli.exe",
+    "filmz.exe"
+  ],
+  "registry": [
+    [
+      "-1",
+      "Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\filmz.exe",
+      "",
+      "[#FilmzExe]"
+    ]
+  ],
+  "mode": "dualScope"
+}
