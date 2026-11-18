@@ -24,6 +24,7 @@ filmz-geom = { workspace = true }
 filmz-color = { workspace = true }
 filmz-frame = { workspace = true }
 filmz-media = { workspace = true }
+craft-media = { workspace = true, features = ["mxf"] }
 filmz-codecs = { workspace = true }
 filmz-project = { workspace = true }
 filmz-edit = { workspace = true }
@@ -32,7 +33,6 @@ filmz-scopes = { workspace = true }
 filmz-text = { workspace = true }
 filmz-audio-dsp = { workspace = true }
 filmz-export = { workspace = true }
-filmz-mxf = { workspace = true }
 filmz-format = { workspace = true }
 filmz-interchange = { workspace = true }
 filmz-captions = { workspace = true }
@@ -42,11 +42,15 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 thiserror = { workspace = true }
 log = { workspace = true }
+roxmltree = { workspace = true }
+chrono = { workspace = true }
 craft-docpath = { workspace = true }
 web-time = "1"
 
 [dev-dependencies]
 filmz-testkit = { workspace = true }
+tempfile = "3"
+filmz-audio-dsp = { workspace = true, features = ["test-util"] }
 filmz-dng = { workspace = true, features = ["writer"] }
 filmz-isobmff = { workspace = true }
 image = { version = "0.25", default-features = false, features = ["png", "gif"] }
