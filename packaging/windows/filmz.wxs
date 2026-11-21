@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  FilmZ MSI (WiX Toolset v5: `dotnet tool install -g wix`). Built by package.ps1:
-
-    wix build filmz.wxs -arch x64 -d Version=1.2.3 -d BinDir=... -d IconPath=... -o out.msi
-
-  Per-machine install into Program Files and a Start Menu shortcut. No file associations.
--->
-<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
-  <Package
-      Name="FilmZ"
-      Manufacturer="Learning Machines LLC"
-      Version="$(var.Version)"
-      UpgradeCode="ED9AA53E-F00C-5B11-B3CE-4F2ABC8C0769"
-      Scope="perMachine"
-      Compressed="yes"
-      Language="1033">
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+  <?ifndef HasCraftFontLicences ?>
+  <?define HasCraftFontLicences=0 ?>
+  <?endif?>
+  <Package Name="FilmZ" Manufacturer="Learning Machines LLC" Version="$(var.Version)" UpgradeCode="ED9AA53E-F00C-5B11-B3CE-4F2ABC8C0769" Scope="perUserOrMachine" Compressed="yes" Language="1033">
     <SummaryInformation Description="FilmZ video editor" Manufacturer="Learning Machines LLC" />
+    <?include $(sys.SOURCEFILEDIR)install-policy.wxi?>
     <!-- Same-version upgrades let successive pre-releases of one X.Y.Z replace each other
          (MSI versions are numeric, so 1.2.3-rc.1 and 1.2.3-rc.2 are both 1.2.3). -->
-    <MajorUpgrade AllowSameVersionUpgrades="yes"
-        DowngradeErrorMessage="A newer version of FilmZ is already installed." />
+    <MajorUpgrade AllowSameVersionUpgrades="yes" DowngradeErrorMessage="A newer version of FilmZ is already installed." />
     <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
 
     <Icon Id="FilmzIcon.ico" SourceFile="$(var.IconPath)" />
@@ -29,25 +18,40 @@
     <Property Id="ARPHELPLINK" Value="https://github.com/danish0440/filmz/issues" />
 
     <StandardDirectory Id="ProgramFiles6432Folder">
-      <Directory Id="INSTALLFOLDER" Name="FilmZ" />
+      <Directory Id="CraftSuiteFolder" Name="Upstream">
+        <Directory Id="INSTALLFOLDER" Name="FilmZ" />
+      </Directory>
     </StandardDirectory>
     <StandardDirectory Id="ProgramMenuFolder" />
 
     <Feature Id="Main" Title="FilmZ" Level="1">
+      <?if $(var.HasCraftFontLicences) = 1 ?>
+      <ComponentGroupRef Id="CraftFontLicences" />
+      <?endif?>
       <ComponentGroupRef Id="FilmzFiles" />
     </Feature>
+  <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
+    <UI>
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="2" Condition="NOT Installed" />
+      <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2" Condition="NOT Installed" />
+    </UI>
   </Package>
 
   <Fragment>
+    <?if $(var.HasCraftFontLicences) = 1 ?>
+    <ComponentGroup Id="CraftFontLicences" Directory="INSTALLFOLDER">
+      <Files Include="$(var.DocsDir)\**" />
+    </ComponentGroup>
+    <?endif?>
     <ComponentGroup Id="FilmzFiles" Directory="INSTALLFOLDER">
       <Component Id="FilmzApp" Guid="7DA464C2-B3BC-561E-BEBA-B6C4BD5178A7">
+        <File Id="FilmzNotice" Source="$(var.BinDir)\NOTICE" KeyPath="no" />
         <File Id="FilmzExe" Source="$(var.BinDir)\filmz.exe" KeyPath="yes">
-          <Shortcut Id="StartMenuShortcut" Directory="ProgramMenuFolder" Name="FilmZ"
-              Description="FilmZ video editor" WorkingDirectory="INSTALLFOLDER" Advertise="yes"
-              Icon="FilmzIcon.ico" IconIndex="0" />
+          <Shortcut Id="StartMenuShortcut" Directory="ProgramMenuFolder" Name="FilmZ" Description="FilmZ video editor" WorkingDirectory="INSTALLFOLDER" Advertise="yes" Icon="FilmzIcon.ico" IconIndex="0" />
         </File>
 
-        <RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\filmz.exe" Value="[#FilmzExe]" Type="string" />
+        <RegistryValue Root="HKMU" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\filmz.exe" Value="[#FilmzExe]" Type="string" />
+      <RegistryValue Root="HKMU" Key="Software\FilmZ" Name="InstallDir" Value="[INSTALLFOLDER]" Type="string" />
       </Component>
 
       <Component Id="FilmzCli">
