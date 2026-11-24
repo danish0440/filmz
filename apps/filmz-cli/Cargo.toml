@@ -27,12 +27,11 @@ filmz-gpu = { workspace = true }
 filmz-media = { workspace = true }
 filmz-codecs = { workspace = true }
 filmz-platform = { workspace = true }
-filmz-mxf = { workspace = true }
-filmz-mpegts = { workspace = true }
-filmz-ogg = { workspace = true }
+craft-media = { workspace = true, features = ["mpegts", "mxf", "ogg"] }
 filmz-automation = { workspace = true }
 serde_json = { workspace = true }
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
 
 [dev-dependencies]
 filmz-testkit = { workspace = true }
+tempfile = "3"
