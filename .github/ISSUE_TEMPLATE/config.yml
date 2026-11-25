@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/danish0440/filmz/blob/main/SECURITY.md
+    about: Read the reporting guidance before sharing sensitive details or malicious files.
+  - name: Community help
+    url: https://github.com/danish0440/filmz/issues
+    about: Ask usage questions and discuss FilmZ workflows with the community.

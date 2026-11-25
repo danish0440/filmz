@@ -26,6 +26,9 @@ pub fn decode_json() -> Value {
         // decoded frames all sources hold, and the budget idle sources are trimmed to
         "cacheMB": filmz_codecs::cached_bytes() as f64 / 1e6,
         "cacheBudgetMB": filmz_codecs::FRAME_BUDGET as f64 / 1e6,
+        // decoded animated GIF / APNG frames all sources hold, and the budget they are evicted down to
+        "animatedCacheMB": filmz_media::animated::cached_bytes() as f64 / 1e6,
+        "animatedBudgetMB": filmz_media::animated::ANIMATED_BUDGET as f64 / 1e6,
         // plane buffers of evicted frames waiting for the next decoded pictures, and how many
         // planes were decoded into a recycled buffer
         "planePoolMB": filmz_frame::pool::stats().idle_bytes as f64 / 1e6,
@@ -98,6 +101,8 @@ mod tests {
             "liveDecoders",
             "cacheMB",
             "cacheBudgetMB",
+            "animatedCacheMB",
+            "animatedBudgetMB",
             "planePoolMB",
             "planesReused",
         ] {
