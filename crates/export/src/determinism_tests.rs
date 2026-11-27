@@ -308,3 +308,130 @@ fn a_panic_while_rendering_ahead_is_an_error() {
         assert!(matches!(r, Err(ExportError::Encode(_))), "{:?}", r.map(|_| ()));
     });
 }
+
+// ------------------------------------------------------------------ max_threads
+
+/// A provider that notes how many threads the pool it is asked on has, and which threads ask.
+struct Noting<'a> {
+    inner: &'a SourceMap,
+    most: AtomicUsize,
+    threads: std::sync::Mutex<std::collections::HashSet<std::thread::ThreadId>>,
+}
+
+impl<'a> Noting<'a> {
+    fn new(inner: &'a SourceMap) -> Self {
+        Self { inner, most: AtomicUsize::new(0), threads: Default::default() }
+    }
+}
+
+impl SourceProvider for Noting<'_> {
+    fn source(&self, item: ItemId) -> Option<SharedSource> {
+        self.most.fetch_max(rayon::current_num_threads(), Ordering::SeqCst);
+        self.threads.lock().unwrap().insert(std::thread::current().id());
+        self.inner.source(item)
+    }
+}
+
+/// Export the test project from a pool of `outer` threads with `max_threads` set, and report the
+/// biggest pool a frame was asked on and how many different threads asked.
+fn threads_used(outer: usize, max_threads: u32, name: &str) -> (usize, usize) {
+    let (p, seq, m) = project();
+    let noting = Noting::new(&m);
+    let settings = ExportSettings { format: Format::Mjpeg, path: tmp(name), include_audio: false, max_threads, ..Default::default() };
+    pool(outer).install(|| export(&p, seq, &settings, &noting, &Progress::default())).unwrap();
+    (noting.most.load(Ordering::SeqCst), noting.threads.lock().unwrap().len())
+}
+
+#[test]
+fn max_threads_caps_the_threads_an_export_runs_on() {
+    // uncapped, it renders on the pool it is called in
+    let (most, threads) = threads_used(8, 0, "cap-0.mov");
+    assert_eq!(most, 8);
+    assert!(threads > 3, "{threads} threads asked for frames: the uncapped export should have used several");
+    // capped, on a pool of that size
+    for cap in [1u32, 3] {
+        let (most, threads) = threads_used(8, cap, &format!("cap-{cap}.mov"));
+        assert_eq!(most, cap as usize, "cap {cap}");
+        assert!(threads <= cap as usize, "cap {cap}: {threads} threads asked for frames");
+    }
+}
+
+#[test]
+fn max_threads_never_adds_threads() {
+    // a cap at or above the pool the export is called in changes nothing
+    assert_eq!(threads_used(4, 4, "cap-same.mov").0, 4);
+    assert_eq!(threads_used(4, 100, "cap-large.mov").0, 4);
+}
+
+#[test]
+fn max_threads_does_not_change_the_file() {
+    for (format, ext) in [(Format::ProRes, "mov"), (Format::H264, "mp4"), (Format::Mjpeg, "mov")] {
+        let settings = |name: &str, max_threads: u32| ExportSettings { format, path: tmp(&format!("{name}.{ext}")), max_threads, ..Default::default() };
+        let reference = export_with_cores(5, &settings(&format!("{}-uncapped", format.id()), 0));
+        for cap in [1u32, 3] {
+            let capped = export_with_cores(5, &settings(&format!("{}-cap{cap}", format.id()), cap));
+            assert!(reference == capped, "{}: a cap of {cap} thread(s) gives a different file", format.label());
+        }
+    }
+}
+
+#[test]
+fn own_threads_are_a_pool_of_their_own() {
+    let cores = std::thread::available_parallelism().map_or(1, |n| n.get());
+    let (n, name) = on_own_threads(0, || (rayon::current_num_threads(), std::thread::current().name().map(str::to_owned)));
+    assert_eq!(n, cores, "one thread per core unless asked");
+    assert!(name.as_deref().is_some_and(|n| n.starts_with("filmz-export-")), "{name:?}");
+    assert_eq!(on_own_threads(2, rayon::current_num_threads), 2.min(cores));
+    assert_eq!(on_own_threads(u32::MAX, rayon::current_num_threads), cores, "never more threads than cores");
+}
+
+/// Two background jobs at once (an export and Render Previews) split the cores: each made a pool of
+/// one thread per core, so together they ran twice as many threads as there are cores.
+#[test]
+fn background_jobs_share_one_pool() {
+    let cores = std::thread::available_parallelism().map_or(1, |n| n.get());
+    // a pool per job would run every job on a thread never seen before
+    let threads: std::collections::HashSet<_> = (0..=cores).map(|_| on_own_threads(0, || std::thread::current().id())).collect();
+    assert!(threads.len() <= cores, "{} threads for {} jobs on {cores} cores", threads.len(), cores + 1);
+    let together = std::thread::scope(|s| {
+        let jobs: Vec<_> = (0..2).map(|_| s.spawn(|| on_own_threads(0, rayon::current_num_threads))).collect();
+        jobs.into_iter().filter_map(|j| j.join().ok()).collect::<Vec<_>>()
+    });
+    assert_eq!(together, vec![cores, cores], "both jobs on the same pool of one thread per core");
+}
+
+/// A shared pool that could not be made (no threads to be had) was remembered as none for good, so
+/// every later background job rendered on the global pool beside the monitors.
+#[test]
+fn a_shared_pool_that_could_not_be_made_is_tried_again() {
+    let slot = std::sync::Mutex::new(None);
+    assert_eq!(crate::run::made_once(&slot, || None::<u32>), None);
+    assert_eq!(crate::run::made_once(&slot, || Some(7)).as_deref(), Some(&7), "tried again");
+    assert_eq!(crate::run::made_once(&slot, || Some(8)).as_deref(), Some(&7), "made once it worked");
+}
+
+#[test]
+fn own_threads_run_the_background_hook_as_they_start() {
+    static STARTED: std::sync::Mutex<Vec<std::thread::ThreadId>> = std::sync::Mutex::new(Vec::new());
+    fn note() {
+        STARTED.lock().unwrap().push(std::thread::current().id());
+    }
+    // a capped job makes its pool now, after the hook is in; the shared pool may have been made by
+    // another test before it
+    if std::thread::available_parallelism().map_or(1, |n| n.get()) < 2 {
+        return;
+    }
+    crate::register_background_thread_start(note);
+    let workers: std::collections::HashSet<_> = on_own_threads(1, || (0..64).into_par_iter().map(|_| std::thread::current().id()).collect());
+    let started = STARTED.lock().unwrap();
+    assert!(!workers.is_empty() && workers.iter().all(|w| started.contains(w)), "every thread of the pool ran the hook");
+    assert!(!started.contains(&std::thread::current().id()), "the calling thread keeps its priority");
+}
+
+#[test]
+fn max_threads_is_a_setting_of_the_json_interface() {
+    let s: ExportSettings = serde_json::from_str(r#"{"format":"mjpeg","maxThreads":2}"#).unwrap();
+    assert_eq!(s.max_threads, 2);
+    assert_eq!(ExportSettings::default().max_threads, 0, "all cores unless asked");
+    assert_eq!(serde_json::to_value(&s).unwrap()["maxThreads"], serde_json::json!(2));
+}

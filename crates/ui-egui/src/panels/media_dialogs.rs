@@ -34,7 +34,10 @@ fn mb(b: u64) -> String {
 /// Draw whichever media dialogs are open; open Link Media when a project needs it.
 pub fn show(app: &mut FilmzApp, ctx: &egui::Context) {
     if app.session.offline.prompt && app.ui.link_media.is_none() {
-        app.ui.link_media = Some(LinkMediaDraft::default());
+        // Asked on open: list only the newly missing files, not the ones already made offline.
+        let s = &app.session;
+        let skipped = s.offline.missing.iter().filter(|i| s.project.item(**i).and_then(|it| it.as_media()).is_some_and(|m| m.offline)).map(|i| i.0).collect();
+        app.ui.link_media = Some(LinkMediaDraft { skipped, ..LinkMediaDraft::default() });
     }
     if app.ui.link_media.is_some() {
         link_media(app, ctx);
@@ -84,7 +87,7 @@ pub fn route(app: &mut FilmzApp, id: &str, params: &Value) -> Option<Result<Valu
             let exts: Vec<&str> = filmz_media::VIDEO_EXTENSIONS.to_vec();
             let hint = RelinkHint { command: id.to_string(), params: json!({"item": item.0}) };
             let id = id.to_string();
-            Some(app.pick(FileDialog::Relink { exts: exts.iter().map(|e| e.to_string()).collect(), hint }, move |app, paths| {
+            Some(app.pick(FileDialog::Relink { exts: exts.iter().map(ToString::to_string).collect(), hint }, move |app, paths| {
                 let Some(picked) = paths.into_iter().next() else { return Ok(Value::Null) };
                 app.session.execute(&id, json!({"item": item.0, "path": picked})).map_err(|e| e.to_string())
             }))
@@ -129,7 +132,7 @@ fn match_params(d: &LinkMediaDraft) -> Value {
 }
 
 fn preview_texture(app: &FilmzApp, ctx: &egui::Context, path: &str) -> Option<egui::TextureHandle> {
-    let key = egui::Id::new(("link-preview", path));
+    let key = egui::Id::unique(("link-preview", path));
     if let Some(t) = ctx.data(|d| d.get_temp::<Option<egui::TextureHandle>>(key)) {
         return t;
     }
@@ -145,6 +148,11 @@ fn preview_texture(app: &FilmzApp, ctx: &egui::Context, path: &str) -> Option<eg
 
 fn link_media(app: &mut FilmzApp, ctx: &egui::Context) {
     let Some(mut d) = app.ui.link_media.clone() else { return };
+    if d.pending_script_mark_relink.is_some() {
+        review_script_mark_relink(app, ctx, &mut d);
+        app.ui.link_media = Some(d);
+        return;
+    }
     let rows: Vec<_> = missing_list(app).into_iter().filter(|r| !d.skipped.contains(&r.0)).collect();
     if rows.is_empty() {
         app.ui.link_media = None;
@@ -161,7 +169,7 @@ fn link_media(app: &mut FilmzApp, ctx: &egui::Context) {
     let rows_max_h = (ctx.content_rect().height() * 0.3).clamp(90.0, 320.0);
     let width = (ctx.content_rect().width() - 40.0).clamp(1.0, 760.0);
     egui::Window::new(tl!("Link Media"))
-        .id(egui::Id::new("Link Media"))
+        .id(egui::Id::unique("Link Media"))
         .collapsible(false)
         .resizable(false)
         .default_width(width)
@@ -217,7 +225,10 @@ fn link_media(app: &mut FilmzApp, ctx: &egui::Context) {
                 ui.separator();
                 ui.horizontal_wrapped(|ui| {
                     ui.label(tl!("Search in:"));
-                    let r = ui.add(egui::TextEdit::singleline(&mut d.folder).desired_width((ui.available_width() * 0.5).min(360.0)).hint_text(tl!("Folder")));
+                    let r = crate::widgets::accessible_name(
+                        ui.add(egui::TextEdit::singleline(&mut d.folder).desired_width((ui.available_width() * 0.5).min(360.0)).hint_text(tl!("Folder"))),
+                        "Folder",
+                    );
                     push(&mut elems, "linkMedia.folder", &r, "folder");
                     let r = ui.button(tl!("Browse…"));
                     push(&mut elems, "linkMedia.browse", &r, "Browse…");
@@ -339,7 +350,7 @@ fn link_media(app: &mut FilmzApp, ctx: &egui::Context) {
             params["item"] = json!(item);
             let hint = RelinkHint { command: "media.relink".into(), params };
             let item = json!(item);
-            app.pick_ui(FileDialog::Relink { exts: exts.iter().map(|e| e.to_string()).collect(), hint }, move |app, paths| {
+            app.pick_ui(FileDialog::Relink { exts: exts.iter().map(ToString::to_string).collect(), hint }, move |app, paths| {
                 let (Some(path), Some(mut d)) = (paths.into_iter().next(), app.ui.link_media.clone()) else { return };
                 relink_to(app, &mut d, &item, path);
                 app.ui.link_media = Some(d);
@@ -351,12 +362,18 @@ fn link_media(app: &mut FilmzApp, ctx: &egui::Context) {
             }
         }
         Some("offline") => {
+            let _ = app.session.execute("media.makeOffline", json!({"items": [item]}));
             d.skipped.push(item);
             d.candidates.clear();
             d.candidate = None;
         }
-        Some("offlineAll") | Some("cancel") => {
+        Some("offlineAll") => {
             let _ = app.session.execute("media.offlineAll", json!({}));
+            keep = false;
+        }
+        // Cancel leaves the files missing for this session only; the next open asks again.
+        Some("cancel") => {
+            app.session.offline.prompt = false;
             keep = false;
         }
         _ => {}
@@ -371,7 +388,7 @@ fn make_offline(app: &mut FilmzApp, ctx: &egui::Context) {
     let mut ok = false;
     let n = app.session.state.project_selection.len();
     egui::Window::new(tl!("Make Offline"))
-        .id(egui::Id::new("Make Offline"))
+        .id(egui::Id::unique("Make Offline"))
         .collapsible(false)
         .resizable(false)
         .pivot(egui::Align2::CENTER_CENTER)
@@ -416,7 +433,7 @@ fn create_proxies(app: &mut FilmzApp, ctx: &egui::Context) {
     let mut ok = false;
     let mut browse = false;
     egui::Window::new(tl!("Create Proxies"))
-        .id(egui::Id::new("Create Proxies"))
+        .id(egui::Id::unique("Create Proxies"))
         .collapsible(false)
         .resizable(false)
         .pivot(egui::Align2::CENTER_CENTER)
@@ -435,8 +452,12 @@ fn create_proxies(app: &mut FilmzApp, ctx: &egui::Context) {
             ui.add_space(4.0);
             ui.label(RichText::new(tl!("Destination")).strong());
             ui.horizontal(|ui| {
-                let r = ui
-                    .add(egui::TextEdit::singleline(&mut d.destination).desired_width(320.0).hint_text(tl!("Next to the original media, in a Proxies folder")));
+                let r = crate::widgets::accessible_name(
+                    ui.add(
+                        egui::TextEdit::singleline(&mut d.destination).desired_width(320.0).hint_text(tl!("Next to the original media, in a Proxies folder")),
+                    ),
+                    "Destination",
+                );
                 push(&mut elems, "proxies.destination", &r, "destination");
                 let r = ui.button(tl!("Browse…"));
                 push(&mut elems, "proxies.browse", &r, "Browse…");
@@ -489,14 +510,14 @@ fn pm_params(d: &ProjectManagerDraft, dry: bool) -> Value {
 
 fn project_manager(app: &mut FilmzApp, ctx: &egui::Context) {
     let Some(mut d) = app.ui.project_manager.clone() else { return };
-    crate::widgets::revert_drag_on_escape(ctx, egui::Id::new("project-manager-before-drag"), &mut d);
+    crate::widgets::revert_drag_on_escape(ctx, egui::Id::unique("project-manager-before-drag"), &mut d);
     let before = d.clone();
     let mut elems: Elems = Vec::new();
     let mut keep = true;
     let (mut ok, mut calc, mut browse) = (false, false, false);
     let seqs: Vec<(u64, String)> = app.session.project.sequences().map(|i| (i.id.0, i.name.clone())).collect();
     egui::Window::new(tl!("Project Manager"))
-        .id(egui::Id::new("Project Manager"))
+        .id(egui::Id::unique("Project Manager"))
         .collapsible(false)
         .resizable(false)
         .pivot(egui::Align2::CENTER_CENTER)
@@ -555,7 +576,7 @@ fn project_manager(app: &mut FilmzApp, ctx: &egui::Context) {
             ui.separator();
             ui.label(RichText::new(tl!("Destination Path")).strong());
             ui.horizontal(|ui| {
-                let r = ui.add(egui::TextEdit::singleline(&mut d.destination).desired_width(360.0));
+                let r = crate::widgets::accessible_name(ui.add(egui::TextEdit::singleline(&mut d.destination).desired_width(360.0)), "Destination");
                 push(&mut elems, "pm.destination", &r, "destination");
                 let r = ui.button(tl!("Browse…"));
                 push(&mut elems, "pm.browse", &r, "Browse…");
@@ -634,13 +655,66 @@ fn relink_to(app: &mut FilmzApp, d: &mut LinkMediaDraft, item: &Value, path: Str
     let mut p = match_params(d);
     p["item"] = item.clone();
     p["path"] = json!(path);
-    match app.session.execute("media.relink", p) {
+    match app.session.execute("media.relink", p.clone()) {
         Ok(v) => {
-            d.message.clear();
+            set_relink_result(app, d, &v);
             d.candidates.clear();
             d.candidate = None;
-            app.ui.status = tlf!("Linked {n} clip(s)", n = v["relinked"].as_array().map_or(0, Vec::len));
+            d.pending_script_mark_relink = None;
         }
-        Err(e) => d.message = e.to_string(),
+        Err(e) => {
+            d.message = e.to_string();
+            if d.message.contains(filmz_engine::relink::SCRIPT_MARKS_RELINK_REVIEW) {
+                d.pending_script_mark_relink = Some(p);
+            }
+        }
+    }
+}
+
+fn set_relink_result(app: &mut FilmzApp, d: &mut LinkMediaDraft, result: &Value) {
+    app.ui.status = tlf!("Linked {n} clip(s)", n = result["relinked"].as_array().map_or(0, Vec::len));
+    let review_count = result["needsReview"].as_array().map_or(0, Vec::len);
+    d.message = if review_count == 0 {
+        String::new()
+    } else {
+        tlf!("{n} Script-linked clip(s) still need review. Select each remaining source to relink.", n = review_count)
+    };
+}
+
+fn review_script_mark_relink(app: &mut FilmzApp, ctx: &egui::Context, d: &mut LinkMediaDraft) {
+    let Some(mut params) = d.pending_script_mark_relink.clone() else { return };
+    let path = params["path"].as_str().unwrap_or_default();
+    let mut confirm = false;
+    let mut cancel = false;
+    egui::Window::new(tl!("Review Script marks")).collapsible(false).resizable(false).show(ctx, |ui| {
+        ui.label(tl!("FilmZ cannot confirm this is the same footage used by linked Script takes."));
+        ui.label(tl!("If it is the same footage, confirm the relink to preserve their marks. Otherwise cancel and replace the takes in Script."));
+        ui.label(path);
+        ui.horizontal(|ui| {
+            let no = ui.button(tl!("Cancel relink"));
+            app.auto.add("linkMedia.scriptMarks.cancel", no.rect, "Cancel relink");
+            cancel = no.clicked();
+            let yes = ui.button(tl!("Confirm Same Footage and Relink"));
+            app.auto.add("linkMedia.scriptMarks.confirm", yes.rect, "Confirm same footage and preserve Script marks");
+            confirm = yes.clicked();
+        });
+    });
+    if cancel || crate::widgets::escape_closes(ctx) {
+        d.pending_script_mark_relink = None;
+        d.message = tl!("Relink canceled; Script marks were preserved.").into();
+    } else if confirm {
+        params["confirmScriptSameFootage"] = json!(true);
+        match app.session.execute("media.relink", params) {
+            Ok(v) => {
+                d.pending_script_mark_relink = None;
+                set_relink_result(app, d, &v);
+                d.candidates.clear();
+                d.candidate = None;
+            }
+            Err(e) => {
+                d.pending_script_mark_relink = None;
+                d.message = e.to_string();
+            }
+        }
     }
 }
