@@ -1,0 +1,8 @@
+asset:        filmz-nightly.ico
+title:        FilmZ Nightly app icon, Windows .ico (16-256 px)
+author:       Brandon Thomas (FilmZ owner), for the FilmZ project; Nightly derivative by the FilmZ port of the ArtCraft Nightly kit
+source:       original work (drawn by the owner in ArtCraft, then vectorised)
+license:      MIT OR Apache-2.0
+license-file: assets/app-icon/LICENSE.txt
+added:        2026-11-24 by Claude (agent) for Brandon Thomas
+notes:        Nine PNG frames packed from the recoloured native master; embedded in filmz.exe by build.rs for the nightly channel only.

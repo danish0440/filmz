@@ -20,6 +20,8 @@ type Conn = (BufReader<tokio::net::tcp::OwnedReadHalf>, tokio::net::tcp::OwnedWr
 
 pub struct BridgeClient {
     addr: String,
+    /// Inherited from the same owner-controlled environment as the desktop app.
+    token: Option<String>,
     /// Connections with no request in flight. A request takes one (or opens one) for its whole
     /// round trip and puts it back only once the reply is read, so a slow or abandoned request
     /// never holds up the others or leaves its late reply for the next one to read (#1538).
@@ -28,14 +30,15 @@ pub struct BridgeClient {
 }
 
 impl BridgeClient {
-    /// `addr` such as `127.0.0.1:9876` (loopback only).
+    /// `addr` such as `127.0.0.1:9886` (loopback only). Reads `FILMZ_CONTROL_TOKEN`
+    /// from the environment; the desktop app requires this credential on every request.
     pub fn new(addr: impl Into<String>) -> Result<Self, AutomationError> {
         let addr = addr.into();
         let host = addr.rsplit_once(':').map(|(h, _)| h).unwrap_or(&addr);
         if !matches!(host, "127.0.0.1" | "localhost" | "[::1]" | "::1") {
             return Err(AutomationError::BadRequest(format!("bridge address must be loopback, got `{addr}`")));
         }
-        Ok(Self { addr, idle: Mutex::new(Vec::new()), next_id: AtomicU64::new(1) })
+        Ok(Self { addr, token: std::env::var("FILMZ_CONTROL_TOKEN").ok(), idle: Mutex::new(Vec::new()), next_id: AtomicU64::new(1) })
     }
 
     /// Run engine command `id` in the app. A blocking export (`file.exportMedia` with
@@ -85,15 +88,46 @@ impl BridgeClient {
                 None => self.connect().await?,
             };
             let id = self.next_id.fetch_add(1, Ordering::Relaxed);
-            let line = format!("{}\n", json!({"id": id, "method": method, "params": params}));
+            let line = craft_control_protocol::request_line(id, self.token.as_deref(), method, &params);
             let res: Result<Value, AutomationError> = async {
-                conn.1.write_all(line.as_bytes()).await.map_err(|e| AutomationError::Bridge(e.to_string()))?;
+                let gone = |e: &std::io::Error| {
+                    matches!(e.kind(), std::io::ErrorKind::ConnectionReset | std::io::ErrorKind::BrokenPipe | std::io::ErrorKind::NotConnected)
+                };
+                conn.1.write_all(line.as_bytes()).await.map_err(|e| {
+                    if gone(&e) {
+                        AutomationError::Bridge(format!("{} closed the connection without a reply", self.addr))
+                    } else {
+                        AutomationError::Bridge(e.to_string())
+                    }
+                })?;
                 let mut buf = String::new();
-                tokio::time::timeout(Duration::from_secs(90), conn.0.read_line(&mut buf))
+                let n = tokio::time::timeout(Duration::from_secs(90), conn.0.read_line(&mut buf))
                     .await
                     .map_err(|_| AutomationError::Bridge("timeout".into()))?
-                    .map_err(|e| AutomationError::Bridge(e.to_string()))?;
-                serde_json::from_str(&buf).map_err(|e| AutomationError::Bridge(format!("bad reply: {e}")))
+                    .map_err(|e| {
+                        if gone(&e) {
+                            AutomationError::Bridge(format!("{} closed the connection without a reply", self.addr))
+                        } else {
+                            AutomationError::Bridge(e.to_string())
+                        }
+                    })?;
+                if n == 0 {
+                    return Err(AutomationError::Bridge(format!("{} closed the connection without a reply", self.addr)));
+                }
+                let v: Value = serde_json::from_str(&buf).map_err(|_| AutomationError::Bridge(Self::wrong_server(&self.addr)))?;
+                // A reply the app never sends (another program on the port, e.g. a different
+                // tool's server) used to surface as a bare parse or `ok` error (#3313). The app
+                // echoes the request's `id` on success; its own `ok: false` rejects (bad token,
+                // junk line) carry none.
+                let known = match v.get("ok") {
+                    Some(Value::Bool(true)) => v.get("id") == Some(&json!(id)),
+                    Some(Value::Bool(false)) => true,
+                    _ => false,
+                };
+                if !known {
+                    return Err(AutomationError::Bridge(Self::wrong_server(&self.addr)));
+                }
+                Ok(v)
             }
             .await;
             match res {
@@ -103,11 +137,7 @@ impl BridgeClient {
                         idle.push(conn);
                     }
                     drop(idle);
-                    return if v.get("ok").and_then(Value::as_bool) == Some(true) {
-                        Ok(v.get("result").cloned().unwrap_or(Value::Null))
-                    } else {
-                        Err(AutomationError::App(v.get("error").and_then(Value::as_str).unwrap_or("error").to_string()))
-                    };
+                    return craft_control_protocol::reply_result(&v).map_err(AutomationError::App);
                 }
                 Err(_) if attempt == 0 => {}
                 Err(e) => return Err(e),
@@ -116,11 +146,21 @@ impl BridgeClient {
         Err(AutomationError::Bridge("unreachable".into()))
     }
 
+    /// The peer answered but not as the control server does (`{"ok": …}` per line): another
+    /// program owns the port. The classic case is a different tool's server, which used to
+    /// surface as a bare JSON parse error (#3313).
+    fn wrong_server(addr: &str) -> String {
+        format!("{addr} is not a FilmZ control server: something else is listening on this port")
+    }
+
     async fn connect(&self) -> Result<Conn, AutomationError> {
         let s = tokio::time::timeout(Duration::from_secs(5), TcpStream::connect(&self.addr))
             .await
             .map_err(|_| AutomationError::Bridge(format!("timed out connecting to {}", self.addr)))?
-            .map_err(|e| AutomationError::Bridge(format!("cannot connect to {} ({e}); start the app with `filmz --control <port>`", self.addr)))?;
+            .map_err(|e| AutomationError::Bridge(format!(
+                "cannot connect to {} ({e}); start the app with `filmz --control <port>` and set FILMZ_CONTROL_TOKEN to the same 64-hex-character value on both sides (see docs/control-protocol.md)",
+                self.addr
+            )))?;
         let (r, w) = s.into_split();
         Ok((BufReader::new(r), w))
     }
@@ -170,6 +210,20 @@ mod tests {
             }
         });
         (addr, seen)
+    }
+
+    /// A refused connection names the launch command and the token requirement (#3436): the
+    /// reporter spent two ports and a debug-level console capture on a bare "connection refused".
+    #[tokio::test]
+    async fn refused_connection_error_names_the_token_requirement() {
+        // Bind and drop: connecting to the freed address is deterministically refused.
+        let listener = tokio::net::TcpListener::bind(("127.0.0.1", 0)).await.unwrap();
+        let addr = listener.local_addr().unwrap().to_string();
+        drop(listener);
+        let b = BridgeClient::new(addr.as_str()).unwrap();
+        let err = b.call("ui.inspect", json!({})).await.unwrap_err().to_string();
+        assert!(err.contains("--control"), "{err}");
+        assert!(err.contains("FILMZ_CONTROL_TOKEN"), "{err}");
     }
 
     /// A blocking bridge export runs as an app job (#91, #92): the app never sees `wait: true` (it
@@ -271,6 +325,79 @@ mod tests {
         assert_eq!(b.execute("fast", json!({})).await.unwrap(), json!("fast"));
     }
 
+    /// A stand-in for another program's server (the Blender MCP add-on that also defaults to a
+    /// nearby port, #3313): it answers every line, just never as the control server would.
+    async fn foreign_app(reply: &str) -> String {
+        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap().to_string();
+        let reply = reply.to_string();
+        tokio::spawn(async move {
+            while let Ok((s, _)) = listener.accept().await {
+                let reply = reply.clone();
+                tokio::spawn(async move {
+                    let (r, mut w) = s.into_split();
+                    let mut lines = BufReader::new(r).lines();
+                    while let Ok(Some(_)) = lines.next_line().await {
+                        let _ = w.write_all(format!("{reply}\n").as_bytes()).await;
+                    }
+                });
+            }
+        });
+        addr
+    }
+
+    /// A non-FilmZ reply used to surface as `bad reply: …` (a JSON parse error) or a bare
+    /// `app: error`; the port's real owner is named instead (#3313).
+    #[tokio::test]
+    async fn a_reply_from_another_program_is_named() {
+        for reply in [
+            "{\"status\": \"error\", \"message\": \"unknown command\"}",
+            "{\"jsonrpc\": \"2.0\", \"id\": 1, \"result\": {}}",
+            "not json at all",
+            "{\"ok\": true}",
+            "{\"ok\": true, \"id\": 9999}",
+        ] {
+            let addr = foreign_app(reply).await;
+            let b = BridgeClient::new(addr.clone()).unwrap();
+            let e = b.call("ui.inspect", json!({})).await.unwrap_err();
+            let e = e.to_string();
+            assert!(e.contains("not a FilmZ control server") && e.contains(&addr), "{reply}: {e}");
+        }
+    }
+
+    /// The app's own unsolicited rejects (`{"ok": false, "error": …}`) carry no `id` (bad token,
+    /// junk line): they must reach the caller as the app's error, not as a foreign server.
+    #[tokio::test]
+    async fn an_error_reply_without_an_id_is_the_apps_own_error() {
+        let addr = foreign_app("{\"ok\": false, \"error\": \"control authentication failed; closing the connection\"}").await;
+        let b = BridgeClient::new(addr).unwrap();
+        let e = b.call("ui.inspect", json!({})).await.unwrap_err();
+        assert_eq!(e.to_string(), "app: control authentication failed; closing the connection");
+    }
+
+    /// A peer that hangs up silently is named too, not "EOF while parsing a value". Closing
+    /// after reading the request sends a clean FIN; closing without reading sends a reset.
+    #[tokio::test]
+    async fn a_connection_closed_without_reply_is_named() {
+        for read_first in [true, false] {
+            let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+            let addr = listener.local_addr().unwrap().to_string();
+            tokio::spawn(async move {
+                while let Ok((s, _)) = listener.accept().await {
+                    tokio::spawn(async move {
+                        if read_first {
+                            let (r, _w) = s.into_split();
+                            let _ = BufReader::new(r).lines().next_line().await;
+                        }
+                    });
+                }
+            });
+            let b = BridgeClient::new(addr).unwrap();
+            let e = b.call("ui.inspect", json!({})).await.unwrap_err();
+            assert!(e.to_string().contains("closed the connection without a reply"), "read_first={read_first}: {e}");
+        }
+    }
+
     /// Everything else is forwarded unchanged.
     #[tokio::test]
     async fn other_commands_are_forwarded() {
@@ -281,5 +408,20 @@ mod tests {
         let seen = seen.lock().await;
         assert_eq!(seen.len(), 2);
         assert_eq!(seen[1]["params"]["command"], "sequence.inspect");
+    }
+
+    #[tokio::test]
+    async fn credential_is_sent_on_every_request() {
+        let (addr, seen) = fake_app(Value::Null).await;
+        let mut b = BridgeClient::new(addr).unwrap();
+        // Inject directly to avoid mutating the process environment in parallel tests.
+        let token = "0123456789abcdef".repeat(4);
+        b.token = Some(token.clone());
+        b.call("ui.inspect", json!({})).await.unwrap();
+        b.execute("file.saveAs", json!({"path": "/owner/project.fcproj"})).await.unwrap();
+        let seen = seen.lock().await;
+        assert_eq!(seen.len(), 2);
+        assert!(seen.iter().all(|request| request["token"] == token));
+        assert_eq!(seen[1]["params"]["params"]["path"], "/owner/project.fcproj");
     }
 }
