@@ -2,7 +2,7 @@
   "mcpServers": {
     "filmz": {
       "command": "target/release/filmz-cli",
-      "args": ["mcp", "--bridge", "127.0.0.1:9876"]
+      "args": ["mcp", "--bridge", "127.0.0.1:9886"]
     },
     "filmz-headless": {
       "command": "target/release/filmz-cli",

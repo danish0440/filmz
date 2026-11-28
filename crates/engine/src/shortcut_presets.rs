@@ -18,6 +18,10 @@ pub const FILMZ_PANEL: &[Entry] = &[
     ("edit.undo", "Left", "History"),
     ("edit.redo", "Right", "History"),
     ("sequence.close", "Cmd+W", "Timeline"),
+    ("script.thumbnailBack", "Shift+Left", "Script"),
+    ("script.thumbnailForward", "Shift+Right", "Script"),
+    ("edit.clear", "Backspace", "Script"),
+    ("edit.clear", "Delete", "Script"),
 ];
 
 /// Premiere Pro's default keyboard (macOS) mapped onto FilmZ commands. FilmZ Default takes
@@ -264,6 +268,7 @@ pub const PREMIERE: &[Entry] = &[
     ("source.open", "Shift+O", "Project"),
     ("edit.undo", "Left", "History"),
     ("edit.redo", "Right", "History"),
+    ("history.deleteRedoable", "Backspace", "History"),
 ];
 
 /// Premiere's panel-scoped default keys for the keyboard-only commands (M3.12). FilmZ Default
@@ -289,6 +294,8 @@ pub const PREMIERE_PANEL: &[Entry] = &[
     ("timeline.decreaseAudioHeight", "Alt+-", "Timeline"),
     ("timeline.nextScreen", "PageDown", "Timeline"),
     ("timeline.prevScreen", "PageUp", "Timeline"),
+    ("sequence.setWorkAreaIn", "Alt+[", "Timeline"),
+    ("sequence.setWorkAreaOut", "Alt+]", "Timeline"),
     ("graphics.nudgeLeft", "Cmd+Left", "Program"),
     ("graphics.nudgeRight", "Cmd+Right", "Program"),
     ("graphics.nudgeUp", "Cmd+Up", "Program"),
@@ -350,6 +357,8 @@ pub const PREMIERE_PANEL: &[Entry] = &[
     ("captions.merge", "Alt+M", "Text"),
     ("captions.split", "Alt+S", "Text"),
     ("playback.loop", "Cmd+L", "Audio Track Mixer"),
+    ("mixer.showHideTracks", "Cmd+Alt+T", "Audio Track Mixer"),
+    ("mixer.meterInputOnly", "Ctrl+Shift+I", "Audio Track Mixer"),
     ("playback.toggle", "Space", "Metadata"),
     ("playback.loop", "Cmd+L", "Metadata"),
     ("mediaBrowser.openInSource", "Shift+O", "Media Browser"),
